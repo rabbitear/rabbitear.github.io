@@ -1,0 +1,79 @@
+body {
+    margin; 0;
+    padding: 1.5em;
+    border: 20px #666 ridge;
+	font: 26px Verdana, sans-serif;
+}
+h1 {
+    text-align: center;
+    font: 32px serif;
+}
+h2 {
+    text-align: center;
+    font: 22px serif;
+}
+
+.button {
+    display: inline-block;
+    background-color: #4e4e4e;
+    font-size: 16px;
+    font-family: sans-serif;
+    margin-left: 5px;
+    height: 60px;
+    width: 120px;
+    border-radius: 100%;
+    border: 5px solid black;
+    text-align: center;
+    text-margin: auto;
+    padding-top: 15px;
+}
+
+/* this doesn't center the buttons, its suppose to. */
+div:first-child {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* links in paragraph colors */
+p > a:link {
+    color: #b5d777;
+    text-decoration: none;
+}
+
+p > a:visited {
+    color: #ccccbb;
+    text-decoration: none;
+}
+
+p > a:hover {
+    color: black;
+    text-decoration: none;
+
+}
+
+p > a:active {
+    color: white;
+    text-decoration: none;
+}
+
+/* button links */
+div a:link {
+    color: #ccccbb;
+}
+
+div a:visited {
+    color: #b5c777;
+}
+
+div a:hover {
+    color: black;
+}
+
+div a:active {
+    color: white;
+}
+
+#portrait {
+    padding-right: 10px;
+}
