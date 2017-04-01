@@ -1,2 +1,74 @@
-Hello Keybase!
+==================================================================
+https://keybase.io/rabbitear
+--------------------------------------------------------------------
 
+I hereby claim:
+
+  * I am an admin of http://www.securityrabbit.com
+  * I am rabbitear (https://keybase.io/rabbitear) on keybase.
+  * I have a public key with fingerprint 9E10 A4E4 DC4A 8FCB 9C37  437B 353A CF93 68DE 19E2
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid": "0101631379d2a095ac50876686e33699bbdfe80cd7d094c8b6989bbee84071467e5c0a",
+            "fingerprint": "9e10a4e4dc4a8fcb9c37437b353acf9368de19e2",
+            "host": "keybase.io",
+            "key_id": "353acf9368de19e2",
+            "kid": "0101631379d2a095ac50876686e33699bbdfe80cd7d094c8b6989bbee84071467e5c0a",
+            "uid": "c91499fbbc16f5862b201b139c990519",
+            "username": "rabbitear"
+        },
+        "service": {
+            "hostname": "www.securityrabbit.com",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1491082876,
+    "expire_in": 157680000,
+    "prev": "55b95e779793d625158b9e35d247135f02e0e4092bde5adb66e7f8c5f8fefdd9",
+    "seqno": 4,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.0.68
+Comment: https://keybase.io/crypto
+
+yMNKAnicrZJtUFRVGMcXBZEVBheUJHLT60su7dB9v/ds5NiQVDDRJlNms7ncl3Ph
+Du7eZffC8iLBOIwwk4jiiC+jpmW5qAwSGqNQDQJFJDEgoWJDZM0QhihtMIlA3SX7
+1sfOlzPnmd//f/7PM097xEKdPoiy9BzIGoq9E/Rt66lc3dvDxp1FCK+IBYilCMmG
+8xfcIUKPas+WRcSCoBiK0QRGMEDEORRQnEChLEPTLA0JggaA50UJsqggMiIKSIHl
+acBqRQhZEmUwkmYgJaAcYkYk2ZkJ3S637FQ1WwAxlCMhKQokx0oCDwSCIQmGJyiC
+EyRA0KwIMQBxTZileAIKLRzPeWCCrGg17WGfj/cf/P+cO3feTgAYCYDE8wJGSxRL
+4zyOYjxGAAEAlMJAAPRAt5NzQI12czwvq5BzI8VmRCvnyQIMTDbQymPE6/UmeKCQ
+65bVgn/wBEFxaDYut6IqgrJDY7JU1WUJWKgFrnkN5O2P3ey87BS1iWqCPOj2yIoT
+sWAaKahywF4Li6EsrjVsRmC+S3ZDuxwgKIZmUe0EvoF5miVF8YCCDAMYQIg0TmEU
+ywNIUCJOMhhBSSgOUUiiAOdFSHEiT9OQkViBklgJSqIY6NsDc5wKYiG1mFymZumR
+M52cmuuGSPHVVluwLkivWxSyILBpOn3Y0n/3bzY9cm7tvvTOupo385vtJupOyKok
+ffj2W3kHWkYHarf9cpqIuf/q6YbSCkt7inrlYPAnri+ySvbp/3IkJeYNHn3UH98X
+sWVoc6sY+ZvNd7Mlfq66dMuF61zTwDljzK6WNw5XttS92BlaeowbW+m371mc6p+O
+q2XH47GIkrtp1sJtZfnTpYbeB6aTA9e2Yhtsl+Lu7SmKXRiHf5eQtbKi+tFLoWJU
+ctPvxgWTOYZGMa6h3jWqq0/0dU+k9t7Tu2a8qz4dHoIF3tvhs66pkZZNxclX3ycE
+k3Jj6cz5h7NVTSd9SMnOn/0ZE2xswQsxf4yZ2i5U1VYa7SPlW73l9r0fHjKePfjU
+B+EDqcuO90xXdIeNlp2vZDb6fV8nzXw03rp6OJot/6y/5zK3v4vddSRtza2+8aKL
+hw0pvRl/4g2hK6SRu/evT77ngAbySOSZmK6f0Px1P5xYvGa3sbVx0O846vnyY8f6
+b157orN36uW2ZEe8vq/GNcHG1Rwr/byN77ZtWqJTDM37hUG571Ljgw5zztPNGe27
+HwZfs5rnjlenj26+/MyPy54Mmrlo6++K6b35bgihNy+3WrOjUld0rvVB/8DZ1Vji
+W1feMZ2qetZ/qPKrMmFDlUhuj3799g3rKxFRKHJmY9j3pl8XPTf2PLV3OVLXExW9
+RJrsKGzDpoITzefWCx2FKWnrrPU1J8L/Bj25wsg=
+=gjzv
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/rabbitear
+
+==================================================================
