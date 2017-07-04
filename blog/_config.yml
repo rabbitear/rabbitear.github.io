@@ -18,7 +18,7 @@ email: rabbitear@securityrabbit.com
 description: >
   My thoughts and some experiences on free software,
   random thoughts, and exploring this digital planet.
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/blog" # the subpath of your site, e.g. /blog
 url: "http://securityrabbit.com" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: rabbitear
 github_username:  rabbitear
