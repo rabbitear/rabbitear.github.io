@@ -13,14 +13,12 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: "SeCuRiTyRabBiT blog"
+title: "rabbitear's SeCuRiTyRabBiT blog"
 email: rabbitear@securityrabbit.com
 description: >
-  RabbitEar's blog about information security, topics of
-  open source and free software, projects, thoughts, realizations,
-  trimphs, and tribulations; usually gavitating around the digital
-  world we live on.
-baseurl: "/blog" # the subpath of your site, e.g. /blog
+  My thoughts and some experiences on free software,
+  random thoughts, and exploring this digital planet.
+baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://securityrabbit.com" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: rabbitear
 github_username:  rabbitear
@@ -33,3 +31,9 @@ gems:
 exclude:
   - Gemfile
   - Gemfile.lock
+
+# Theme Options Options
+show_downloads: false
+# google_analytics: # Your Google Analytics tracking ID
+
+
