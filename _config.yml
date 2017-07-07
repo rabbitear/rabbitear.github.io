@@ -1,8 +1,11 @@
-title: SeCeRiTyRaBbiT blog
-description: Always hacking at something, may as well share some notes -- rabbitear.
+title: SeCeRiTyRaBbiT
+description: Always hacking at something, rabbitear's thoughts and notes about free software, computer security, and the random.
 google_analytics: 
 show_downloads: true
+permalink: /blog/:year/:month/:day/:title
 theme: jekyll-theme-hacker
 
 gems:
   - jekyll-mentions
+  - jekyll-sitemap
+
