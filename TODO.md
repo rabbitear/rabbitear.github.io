@@ -7,4 +7,7 @@
         4) telnet to bbs
         5) email ?
 
+    - BBS.html
+        - look for screenshots of the bbs.
+
 
