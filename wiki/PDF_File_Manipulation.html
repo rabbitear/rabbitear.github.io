@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="css/style.css">
+<title>PDF_File_Manipulation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="PDF_File_Manipulation"><h1 id="PDF_File_Manipulation" class="header"><a href="#PDF_File_Manipulation">PDF_File_Manipulation</a></h1></div>
+
+<div id="PDF_File_Manipulation-DOCS"><h2 id="DOCS" class="header"><a href="#PDF_File_Manipulation-DOCS">DOCS</a></h2></div>
+<ul>
+<li>
+<a href="Pandoc.html">Pandoc</a> -- great converting tool.
+
+<li>
+<a href="git.html">git</a> - everybodies friendly repo
+
+</ul>
+
+
+<div id="PDF_File_Manipulation-Unlock PDF files (strips 3rd party JS):"><h2 id="Unlock PDF files (strips 3rd party JS):" class="header"><a href="#PDF_File_Manipulation-Unlock PDF files (strips 3rd party JS):">Unlock PDF files (strips 3rd party JS):</a></h2></div>
+<pre bash>
+qpdf --qdf input.pdf output.pdf
+acroread output.pdf # unlock, print-to-file output.ps
+ps2pdf output.ps # output.pdf is now unlocked
+</pre>
+
+<div id="PDF_File_Manipulation-Another Unlock Method:"><h2 id="Another Unlock Method:" class="header"><a href="#PDF_File_Manipulation-Another Unlock Method:">Another Unlock Method:</a></h2></div>
+<pre bash>
+acroread output.pdf # unlock, print-to-file output.ps
+sed "/mark currentfile eexec/,/cleartomark/ d" output.ps | \
+ps2pdf - output.pdf
+</pre>
+
+<div id="PDF_File_Manipulation-Brute force password (not for 3rd party JS locks):"><h2 id="Brute force password (not for 3rd party JS locks):" class="header"><a href="#PDF_File_Manipulation-Brute force password (not for 3rd party JS locks):">Brute force password (not for 3rd party JS locks):</a></h2></div>
+<pre bash>
+pdfcrack -n 9 input.pdf
+</pre>
+<p>
+GoogleDrive will unlock PDF files, there is a size limit of 2MB.
+</p>
+
+<p>
+Ghostscripts GSView: rename file from PDF to PS and try to open it, then
+save the file back to PDF.
+</p>
+
+<p>
+To put txt into pdf the util called text2pdf worked
+found at: <a href="http://www.eprg.org/pdfcorner/text2pdf/">http://www.eprg.org/pdfcorner/text2pdf/</a>
+To join pdf's together use pdfunite
+</p>
+
+<p>
+<code>pdfunite in-1.pdf in-2.pdf in-3.pdf OUT.pdf</code>
+</p>
+
+</body>
+</html>

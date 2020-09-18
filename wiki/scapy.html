@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="css/style.css">
+<title>scapy</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="Scapy"><h1 id="Scapy" class="header"><a href="#Scapy">Scapy</a></h1></div>
+
+<p>
+Most import commands to remember are:
+</p>
+<ul>
+<li>
+<code>ls()</code> -- displays the available protocols
+
+<li>
+<code>lsc()</code> -- lists all of the scapy command functions.
+
+</ul>
+
+<div id="Scapy-Creating a packet"><h2 id="Creating a packet" class="header"><a href="#Scapy-Creating a packet">Creating a packet</a></h2></div>
+
+<p>
+Packets are constucted as layers of protocols [like the OSI model, but exact]. They can be maniplulated independently or glued together.  Example is the IP() object that represents an IPv4 header.  Can use the show() method of <em>an</em> object to display all of <em>its</em> fields.
+</p>
+
+<pre>
+&gt;&gt;&gt; IP().show()
+</pre>
+
+<p>
+Can modify all these fields. Either by passing them as arguments when the IP() object is created, or after saving it as a variable.
+</p>
+
+<pre>
+&gt;&gt;&gt; ip.IP(src="192.168.0.1")
+&gt;&gt;&gt; ip.dst="192.168.0.2"
+&gt;&gt;&gt; ip
+&lt;IP src=192.168.0.1 dst=192.168.0.2 |&gt;
+</pre>
+
+<div id="Scapy-Stringing the packetts together"><h2 id="Stringing the packetts together" class="header"><a href="#Scapy-Stringing the packetts together">Stringing the packetts together</a></h2></div>
+
+<p>
+"Of course, an IP packet by itself isn't very useful. We can add a layer four protocol like TCP or UDP by using the division operator to attach it to our IP packet."
+</p>
+
+<pre>
+&gt;&gt;&gt; ip/TCP()
+&lt;IP  frag=0 proto=tcp src=192.168.0.1 dst=192.168.0.2 |&lt;TCP  |&gt;&gt;
+</pre>
+
+<p>
+Can manipulate the TCP header fields just as like the IP header.
+</p>
+
+<pre>
+&gt;&gt;&gt; tcp=TCP(sport=1025, dport=80)
+&gt;&gt;&gt; (tcp/ip).show()
+</pre>
+
+<p>
+<span id="Scapy-Stringing the packetts together-NOTE:"></span><strong id="NOTE:">NOTE:</strong> Remember to enclose combined headers in a pair of paranthese when using methods like show() on the entire packet.
+</p>
+
+<div id="Scapy-Layer Two"><h2 id="Layer Two" class="header"><a href="#Scapy-Layer Two">Layer Two</a></h2></div>
+
+<p>
+Scapy supports Ethernet and IEEE 802.11 at layer two:
+</p>
+
+<pre>
+&gt;&gt;&gt; Ether()/Dot1Q()/IP()
+&lt;Ether  type=0x8100 |&lt;Dot1Q  type=0x800 |&lt;IP  |&gt;&gt;&gt;
+&gt;&gt;&gt; Dot11()/IP()
+&lt;Dot11  |&lt;IP  |&gt;&gt;
+</pre>
+
+<div id="Scapy-Sending the packet"><h2 id="Sending the packet" class="header"><a href="#Scapy-Sending the packet">Sending the packet</a></h2></div>
+
+<p>
+"Try combining different protocols to form a variety of packets. To send packets onto the wire, use the <code>send()</code> function if transmitting at layer three (i.e. <em>without</em> a layer <em>two</em> header) or the <code>sendp()</code> function if transmitting <em>at</em> layer two.
+</p>
+
+<pre>
+&gt;&gt;&gt; send(ip/tcp)
+.
+Sent 1 packets.
+&gt;&gt;&gt; sendp(Ether()/ip/tcp)
+.
+Sent 1 packets.
+</pre>
+
+<p>
+Values for blank fields are populated automatically when possible.
+</p>
+
+<div id="Scapy-send/receiving"><h2 id="send/receiving" class="header"><a href="#Scapy-send/receiving">send/receiving</a></h2></div>
+
+<p>
+The <code>sr()</code> function will transmit off a packet then record any response.
+</p>
+
+<pre>
+&gt;&gt;&gt; sr(IP(dst="packetlife.net")/ICMP())
+Begin emission:
+Finished to send 1 packets.
+*
+Received 1 packets, got 1 answers, remaining 0 packets
+(&lt;Results: TCP:0 UDP:0 ICMP:1 Other:0&gt;, &lt;Unanswered: TCP:0 UDP:0 ICMP:0 Other:0&gt;)
+</pre>
+
+<p>
+If we want to send and listen for responses to multiple copies of the same packet, we can use the <code>srloop()</code> function and specify a <code>count</code> of packets to send.
+</p>
+
+<pre>
+&gt;&gt;&gt; srloop(IP(dst="packetlife.net")/ICMP(), count=3)
+RECV 1: IP / ICMP 174.143.213.184 &gt; 192.168.1.140 echo-reply 0 / Padding
+RECV 1: IP / ICMP 174.143.213.184 &gt; 192.168.1.140 echo-reply 0 / Padding
+RECV 1: IP / ICMP 174.143.213.184 &gt; 192.168.1.140 echo-reply 0 / Padding
+
+Sent 3 packets, received 3 packets. 100.0% hits.
+(&lt;Results: TCP:0 UDP:0 ICMP:3 Other:0&gt;, &lt;PacketList: TCP:0 UDP:0 ICMP:0 Other:0&gt;)
+</pre>
+
+<div id="Scapy-send/receiving-How to setup a simple port scan"><h3 id="How to setup a simple port scan" class="header"><a href="#Scapy-send/receiving-How to setup a simple port scan">How to setup a simple port scan</a></h3></div>
+<p>
+Say if you want to run a scan on IP:
+</p>
+<pre>
+&gt;&gt;&gt; myip=IP(src="10.0.0.50",dst="10.10.22.1")
+&gt;&gt;&gt; mytcp=TCP(sport=9010,dport=22)
+&gt;&gt;&gt; p=myip/mytcp
+&gt;&gt;&gt; a,u=sr(p)           # &lt;- this actually sends off a packet, and waits return
+</pre>
+<p>
+Note: Could have stored the results in a varible, <code>results=sr(p)</code> instead.
+</p>
+<blockquote>
+Or could split up Answered and Unanswered by a tulip, <code>a,u=sr(p)</code>
+</blockquote>
+<pre>
+&gt;&gt;&gt; a       # by itself will show results.
+&gt;&gt;&gt; a[0]    # will show the TCP settings
+&gt;&gt;&gt; a[1]    # would be UDP
+&gt;&gt;&gt; a[2]    # ICMP and so on.
+</pre>
+
+<p>
+To see what the options are:
+<code>mytcp=TCP()</code>
+<code>mytcp.show()</code>
+or:
+<code>p=myip/mytcp</code>
+<code>p.show()</code>
+</p>
+
+<p>
+note: flags=S (for send) by default.
+</p>
+
+<p>
+To change the current <span id="Scapy-send/receiving-How to setup a simple port scan-myip"></span><strong id="myip">myip</strong> or <span id="Scapy-send/receiving-How to setup a simple port scan-mytcp"></span><strong id="mytcp">mytcp</strong> use the .show() method, which lists
+the varibles you can change for instance <code>mytcp.dport=81</code>.
+IMPORTANT: after changing any varibles REMEMBER to reconstruct the packet.
+p=myip/mytcp
+</p>
+
+<ul>
+<li>
+If the flags return [SA] its open, if its [RA] its closed.
+
+</ul>
+
+
+
+<p>
+<span id="Scapy-send/receiving-How to setup a simple port scan-eof"></span><strong id="eof">eof</strong>
+</p>
+
+</body>
+</html>

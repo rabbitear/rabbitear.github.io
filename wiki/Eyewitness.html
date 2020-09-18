@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="css/style.css">
+<title>Eyewitness</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="Web Screen Shotting in General"><h1 id="Web Screen Shotting in General" class="header"><a href="#Web Screen Shotting in General">Web Screen Shotting in General</a></h1></div>
+<div id="Web Screen Shotting in General-The story (puppeteer):"><h2 id="The story (puppeteer):" class="header"><a href="#Web Screen Shotting in General-The story (puppeteer):">The story (puppeteer):</a></h2></div>
+<p>
+I'm not using puppeteer, node module to make chromium take screen shots
+for recon.  On the <span id="Web Screen Shotting in General-The story (puppeteer):-Kali"></span><strong id="Kali">Kali</strong> <span id="Web Screen Shotting in General-The story (puppeteer):-Linux"></span><strong id="Linux">Linux</strong> box I had to run this command, to
+enable <span id="Web Screen Shotting in General-The story (puppeteer):-user namespace cloning"></span><strong id="user namespace cloning">user namespace cloning</strong> in the kernel:
+</p>
+
+<p>
+<code>sudo sysctl -w kernel.unprivileged_userns_clone=1</code>
+</p>
+
+<p>
+This worked!, at the least it got rid of the errors.  So here is the
+example program for puppeteer, where you can save it as <span id="Web Screen Shotting in General-The story (puppeteer):-example.js"></span><strong id="example.js">example.js</strong> and
+run it with <code>node example.js</code>:
+</p>
+<pre node>
+const puppeteer = require('puppeteer');
+
+(async () =&gt; {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.setViewport({
+    width:1200,
+    height: 3200,
+    deviceScaleFactor: 1,
+  });
+  await page.goto('https://example.com');
+  await page.screenshot({path: 'example.png'});
+
+  await browser.close();
+})();
+</pre>
+<p>
+And it makes a png called example.png in the box, where I should then be
+able to copy it to keybase or, post it on my webpage.
+</p>
+
+<p>
+Here is the PDF way:
+</p>
+<pre node>
+const puppeteer = require('puppeteer');
+
+(async () =&gt; {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.goto('https://news.ycombinator.com', {waitUntil: 'networkidle2'});
+  await page.pdf({path: 'hn.pdf', format: 'A4'});
+
+  await browser.close();
+})();
+</pre>
+
+<p>
+Here is some of the API docs for puppeteer:
+<a href="https://pptr.dev/">https://pptr.dev/</a>
+</p>
+
+<div id="Web Screen Shotting in General-EyeWitness"><h2 id="EyeWitness" class="header"><a href="#Web Screen Shotting in General-EyeWitness">EyeWitness</a></h2></div>
+<p>
+Webscreenshot blurb is below in this file.
+</p>
+<ul>
+<li>
+couldn't get eyewitness to read a list from a file.
+
+<li>
+I had to edit in kali's own repo version, /usr/bin/eyewitness to make
+  it use python2 instead of just python3, I also changed the script to
+  use pushd and popd.
+
+<li>
+since the script goes to the /usr/share/eyewitness directory, you need
+  to do two things:
+
+<ol>
+<li>
+set the -d target directory to its full path name.
+
+<li>
+set the -f url names file to its full path!
+
+</ol>
+<li>
+Then it does work :)
+
+</ul>
+
+<div id="Web Screen Shotting in General-EyeWitness-Github:"><h3 id="Github:" class="header"><a href="#Web Screen Shotting in General-EyeWitness-Github:">Github:</a></h3></div>
+<ul>
+<li>
+In kali, probably because I set the default to python3, and EyeWitness
+  wants the python2, I wasn't successful at installing from git, but
+  here is the site:
+
+<li>
+<a href="https://github.com/FortyNorthSecurityk/EyeWitness.git">https://github.com/FortyNorthSecurityk/EyeWitness.git</a>
+
+</ul>
+
+<div id="Web Screen Shotting in General-EyeWitness-Install:"><h3 id="Install:" class="header"><a href="#Web Screen Shotting in General-EyeWitness-Install:">Install:</a></h3></div>
+<ul>
+<li>
+from the git repo, run <code>sudo setup/setup.sh</code>
+
+</ul>
+
+<div id="Web Screen Shotting in General-EyeWitness-Usage:"><h3 id="Usage:" class="header"><a href="#Web Screen Shotting in General-EyeWitness-Usage:">Usage:</a></h3></div>
+<ul>
+<li>
+<code>eyewitness -f ~/hack/ecobee.com/domains.txt --web --prepend-https -d ~/hack/ecobee.com/eye/ --no-prompt</code>
+
+<li>
+This will erase what is already in the directory because of no prompt.
+
+<li>
+I've added these:
+
+<ul>
+<li>
+--max-retries 10
+
+<li>
+--timeout 14
+
+</ul>
+</ul>
+
+<div id="Web Screen Shotting in General-webscreenshot"><h2 id="webscreenshot" class="header"><a href="#Web Screen Shotting in General-webscreenshot">webscreenshot</a></h2></div>
+<ul>
+<li>
+Can be installed with pip.
+
+<li>
+It runs the machine out of memory, maybe I have too many workers, I
+  put 8 workers, and the VPS is running out of memory with lots of
+  phantomjs processes running.
+
+<li>
+but it did run:
+    <code>webscreenshot -i domains.list -w  8 --no-xserver</code>
+
+</ul>
+
+</body>
+</html>

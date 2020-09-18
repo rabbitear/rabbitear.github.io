@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="css/style.css">
+<title>SQLalchemy</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="SQLalchemy"><h1 id="SQLalchemy" class="header"><a href="#SQLalchemy">SQLalchemy</a></h1></div>
+<p>
+<a href="http://docs.sqlalchemy.org/en/latest/orm/tutorial.html">http://docs.sqlalchemy.org/en/latest/orm/tutorial.html</a>
+</p>
+
+<ol>
+<li>
+To connect:
+
+</ol>
+<p>
+&gt;&gt;&gt; from sqlalchemy import create_engine
+&gt;&gt;&gt; engine = create_engine('sqlite:///:memory:', echo=True)
+</p>
+
+<ol>
+<li>
+Create declarative base class:
+
+</ol>
+<p>
+&gt;&gt;&gt; from sqlalchemy.ext.declarative import declarative_base
+&gt;&gt;&gt; Base = declarative_base()
+</p>
+
+<ol>
+<li>
+Define details of the Table which we will be mapping:
+
+</ol>
+<p>
+&gt;&gt;&gt; from sqlalchemy import Column, Integer, String
+&gt;&gt;&gt; class User(Base):
+...     _<em>tablename</em>_ = 'users'  # this is required at minimum!
+...
+...     id = Column(Integer, primary_key=True)
+...     name = Column(String)
+...     fullname = Column(String)
+...     password = Column(String)
+...
+...     def _<em>repr</em>_(self):
+...        return "&lt;User(name='%s', fullname='%s', password='%s')&gt;" % (
+...                             self.name, self.fullname, self.password)
+</p>
+
+<ol>
+<li>
+Uses the MetaData to actually CREATE TABLEs:
+
+</ol>
+<p>
+&gt;&gt;&gt; Base.metadata.create_all(engine)
+</p>
+
+<ol>
+<li>
+Now mappings are complete.
+
+<li>
+Here we can create and inspect a User object:
+
+</ol>
+<p>
+&gt;&gt;&gt; ed_user = User(name='ed', fullname='Ed Jones',
+password='edspassword')
+&gt;&gt;&gt; ed_user.name
+'ed'
+&gt;&gt;&gt; ed_user.password
+'edspassword'
+&gt;&gt;&gt; str(ed_user.id)  # This won't have an id yet.
+'None'
+</p>
+
+<ol>
+<li>
+SESSIONS:
+
+<li>
+Now can create a session, the ORM's "handle" to the database.
+
+</ol>
+<p>
+&gt;&gt;&gt; from sqlalchemy.orm import sessionmaker
+&gt;&gt;&gt; Session = sessionmaker(bind=engine)
+</p>
+<ul>
+<li>
+nb: if the app doesn't have an Engine yet use:
+
+<ul>
+<li>
+&gt;&gt;&gt; Session = sessionmaker()
+
+</ul>
+<li>
+later: can connect to the engine with:
+
+<ul>
+<li>
+&gt;&gt;&gt; Session.configure(bind=engine)  # once engine is available
+
+</ul>
+</ul>
+
+<ol>
+<li>
+When you need to have a conversation with the database
+
+<li>
+you instantiate a Session, like:
+
+</ol>
+<p>
+&gt;&gt;&gt; session = Session()  # Things will not happen until commit or query.
+</p>
+
+<ol>
+<li>
+For instance: To persist our User object, we 'add()' it to our Session
+
+</ol>
+<p>
+&gt;&gt;&gt; ed_user = User(name='ed', fullname='Ed Jones', password='edspassword')
+&gt;&gt;&gt; session.add(ed_user)  # Now the instance is <span id="SQLalchemy-pending"></span><strong id="pending">pending</strong>, until a flush.
+</p>
+
+<ol>
+<li>
+If we do a query the objects will get flushed into the database:
+
+</ol>
+<p>
+&gt;&gt;&gt; our_user = session.query(User).filter_by(name='ed').first() 
+&gt;&gt;&gt; our_user
+&lt;User(name='ed', fullname='Ed Jones', password='edspassword')&gt;
+</p>
+
+<ol>
+<li>
+To add a bunch of rows:
+
+</ol>
+<p>
+&gt;&gt;&gt; session.add_all([
+...     User(name='wendy', fullname='Wendy Williams', password='foobar'),
+...     User(name='mary', fullname='Mary Contrary', password='xxg527'),
+...     User(name='fred', fullname='Fred Flinstone', password='blah')])
+</p>
+
+<ol>
+<li>
+Change Ed's password:
+
+</ol>
+<p>
+&gt;&gt;&gt; ed_user.password = 'f8s7ccs'
+</p>
+
+<ol>
+<li>
+Has Ed Jones been modified?
+
+</ol>
+<p>
+&gt;&gt;&gt; session.dirty
+IdentitySet([&lt;User(name='ed', fullname='Ed Jones', password='f8s7ccs')&gt;])
+</p>
+
+<ol>
+<li>
+Here is the new things that will be commited to the db at some time:
+
+</ol>
+<p>
+&gt;&gt;&gt; session.new  # doctest: +SKIP
+IdentitySet([&lt;User(name='wendy', fullname='Wendy Williams', password='foobar')&gt;,
+&lt;User(name='mary', fullname='Mary Contrary', password='xxg527')&gt;,
+&lt;User(name='fred', fullname='Fred Flinstone', password='blah')&gt;])
+</p>
+
+<ol>
+<li>
+Finally do the commit:
+
+</ol>
+<p>
+&gt;&gt;&gt; session.commit()
+</p>
+
+<ol>
+<li>
+Looking at Ed's id, earilier was 'None' now is a '1':
+
+</ol>
+<p>
+&gt;&gt;&gt; ed_user.id # doctest: +NORMALIZE_WHITESPACE
+1
+</p>
+
+
+
+<div id="SQLalchemy-PostgreSQL"><h2 id="PostgreSQL" class="header"><a href="#SQLalchemy-PostgreSQL">PostgreSQL</a></h2></div>
+
+<div id="SQLalchemy-PostgreSQL-psycopg2"><h3 id="psycopg2" class="header"><a href="#SQLalchemy-PostgreSQL-psycopg2">psycopg2</a></h3></div>
+<p>
+URL: <a href="http://docs.sqlalchemy.org/en/latest/dialects/postgresql.html#module-sqlalchemy.dialects.postgresql.psycopg2">http://docs.sqlalchemy.org/en/latest/dialects/postgresql.html#module-sqlalchemy.dialects.postgresql.psycopg2</a>
+Connect String:
+</p>
+<blockquote>
+postgresql+psycopg2://user:password@host:port/dbname[?key=val&amp;key=val...]
+</blockquote>
+
+<p>
+Connection Thru Unix Domain:
+</p>
+<blockquote>
+create_engine("postgresql+psycopg2://user:pass@/dbname")
+</blockquote>
+<ul>
+<li>
+the hostname is omitted.
+
+<li>
+default: connect to Unix-domain socket in /tmp
+
+<li>
+override the Unix-domain that pstgres was built with by adding
+      the 'host' keyword.
+    create_engine("postgresql+psycopg2://user:pass@/dbname?host=/var/lib/pg")
+
+</ul>
+
+</body>
+</html>

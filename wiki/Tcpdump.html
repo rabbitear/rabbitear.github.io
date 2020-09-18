@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="css/style.css">
+<title>Tcpdump</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="Tcpdump"><h1 id="Tcpdump" class="header"><a href="#Tcpdump">Tcpdump</a></h1></div>
+<p>
+tcpdump -X &lt;- capture everything.
+</p>
+
+<p>
+tcpdump -i &lt;iface&gt; -vvv -nn host &lt;hostname&gt;
+</p>
+<ul>
+<li>
+-i    the interface to listen
+
+<li>
+-vvv  very very verbose
+
+<li>
+-nn   do not resolv ipaddr or ports.
+
+<li>
+host  the BFP filter to ignore all other hosts.
+
+</ul>
+
+<p>
+When reading output:
+[S] for SYN, [S.] for SYN/ACK -- the port is open!
+[R] for Reset, [R.] for RESET/ACK -- the port is closed!
+</p>
+
+</body>
+</html>

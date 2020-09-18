@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="css/style.css">
+<title>Bug_Bounty_Methodology</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="Bug_Bounty_Methodology"><h1 id="Bug_Bounty_Methodology" class="header"><a href="#Bug_Bounty_Methodology">Bug_Bounty_Methodology</a></h1></div>
+
+<p>
+<span id="Bug_Bounty_Methodology-bugbounty"></span><span class="tag" id="bugbounty">bugbounty</span> <span id="Bug_Bounty_Methodology-hacking"></span><span class="tag" id="hacking">hacking</span> <span id="Bug_Bounty_Methodology-pentesting"></span><span class="tag" id="pentesting">pentesting</span>
+</p>
+
+<div id="Bug_Bounty_Methodology-DOCS"><h2 id="DOCS" class="header"><a href="#Bug_Bounty_Methodology-DOCS">DOCS</a></h2></div>
+<ul>
+<li>
+<a href="SQL_Injection.html">SQL_Injection</a> -- About injecting SQL.
+
+<li>
+<a href="Eyewitness.html">Eyewitness</a> -- The tool to grab website screenshots.
+
+<li>
+<a href="WebGoat.html">WebGoat</a> -- Notes on WebGoat.
+
+<li>
+<a href="git.html">git</a> - everybodies friendly repo
+
+</ul>
+
+<div id="Bug_Bounty_Methodology-DOM XSS"><h2 id="DOM XSS" class="header"><a href="#Bug_Bounty_Methodology-DOM XSS">DOM XSS</a></h2></div>
+<p>
+<span id="Bug_Bounty_Methodology-DOM XSS-From the site:"></span><strong id="From the site:">From the site:</strong>
+"Manually testing for DOM-based XSS arising from URL parameters involves
+a similar process: placing some simple unique input in the parameter,
+using the browser's developer tools to search the DOM for this input,
+and testing each location to determine whether it is exploitable."
+</p>
+
+
+<p>
+<span id="Bug_Bounty_Methodology-DOM XSS-Quote from this article:"></span><strong id="Quote from this article:">Quote from this article:</strong>
+</p>
+
+<p>
+<a href="https://craighays.com/bug-bounty-hunting-tips-4-develop-a-process-and-follow-it/">https://craighays.com/bug-bounty-hunting-tips-4-develop-a-process-and-follow-it/</a>
+</p>
+
+<p>
+"To ensure you operate effectively, define how much time you’re willing to
+spend on each of the stages from 1 to 5. Stage 4 is the most interesting and
+the stage we’re always the keenest to get stuck in to but stages 1-3 are where
+we actually find the bugs. Unless we know what we’re testing we can’t test it
+effectively. Generic vulnerabilities from automated testing tools will almost
+always be detected by either the developers or someone else before you get to
+it. You’ll make the most money by targeting the areas that nobody else is
+thinking of. This is why your research phases are so important. If you want to
+find new bugs you must do new things."
+</p>
+
+<p>
+<span id="Bug_Bounty_Methodology-DOM XSS-Important questions:"></span><strong id="Important questions:">Important questions:</strong>
+</p>
+
+<p>
+What are they running? Have you read about that?, if not do.
+</p>
+
+<div id="Bug_Bounty_Methodology-Methodology to follow (OWASP Testing Guide v4):"><h2 id="Methodology to follow (OWASP Testing Guide v4):" class="header"><a href="#Bug_Bounty_Methodology-Methodology to follow (OWASP Testing Guide v4):">Methodology to follow (OWASP Testing Guide v4):</a></h2></div>
+<ul>
+<li>
+4.2.1 Testing for Web Server fingerpint (OWASP-IG-004)
+
+<ul>
+<li>
+Module: recon/hosts/enum/http/api/builtwith
+
+</ul>
+<li>
+4.2.2 Review Webserver Metafiles (OWASP-IG-001)
+
+<ul>
+<li>
+Module: discovery/info_disclosure/http/interesting_files
+        NB: ^ not a passive test, downloads files, robots.txt, etc..
+
+</ul>
+<li>
+4.2.5 Identify application entry points (OWASP-IG-003)
+
+<ul>
+<li>
+Module: xssed
+        NB: ^ this maps out end-points that should be investigated.
+
+</ul>
+</ul>
+<p>
+AND:
+</p>
+<ul>
+<li>
+4.4.2 Testing for User Enumeration and Guessable User Account
+      (OWASP-AT-002)
+
+</ul>
+
+
+
+
+<p>
+<img src="/home/kreator/.Wiki/tech/images/nyan1.gif" />
+</p>
+
+</body>
+</html>

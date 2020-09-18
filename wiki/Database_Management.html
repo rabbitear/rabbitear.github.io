@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="css/style.css">
+<title>Database_Management</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="Database Management"><h1 id="Database Management" class="header"><a href="#Database Management">Database Management</a></h1></div>
+
+<div id="Database Management-DOCS"><h2 id="DOCS" class="header"><a href="#Database Management-DOCS">DOCS</a></h2></div>
+<ul>
+<li>
+<a href="git.html">git</a> - everybodies friendly repo
+
+<li>
+<a href="MySQL.html">MySQL</a> -- Basic MySQL commands.
+
+</ul>
+
+<div id="Database Management-postgresql"><h2 id="postgresql" class="header"><a href="#Database Management-postgresql">postgresql</a></h2></div>
+<p>
+Usually the superuser is user 'postgres'
+</p>
+<ul>
+<li>
+$ su - postgres
+
+<li>
+$ psql
+
+</ul>
+<p>
+Some commands to use by superuser:
+</p>
+<ul>
+<li>
+createuser, dropuser, createdb, dropdb
+
+</ul>
+
+<div id="Database Management-postgresql-create a table"><h3 id="create a table" class="header"><a href="#Database Management-postgresql-create a table">create a table</a></h3></div>
+<pre>
+CREATE TABLE weather (
+	city		varchar(80),
+	temp_lo		int,		
+	temp_hi		int,		
+	prcp		real,		
+	date		date
+);
+CREATE TABLE cities (
+	name		varchar(80),
+	location	point
+);
+</pre>
+<div id="Database Management-postgresql-insert into table"><h3 id="insert into table" class="header"><a href="#Database Management-postgresql-insert into table">insert into table</a></h3></div>
+<pre>
+INSERT INTO weather
+    VALUES ('San Francisco', 46, 50, 0.25, '1994-11-27');
+INSERT INTO cities
+    VALUES ('San Francisco', '(-194.0, 53.0)');
+INSERT INTO weather (city, temp_lo, temp_hi, prcp, date)
+    VALUES ('San Francisco', 43, 57, 0.0, '1994-11-29');
+INSERT INTO weather (date, city, temp_hi, temp_lo)
+    VALUES ('1994-11-29', 'Hayward', 54, 37);
+</pre>
+<div id="Database Management-postgresql-query the database"><h3 id="query the database" class="header"><a href="#Database Management-postgresql-query the database">query the database</a></h3></div>
+<pre>
+SELECT * FROM weather;
+</pre>
+<p>
+<em>results:</em>
+</p>
+<blockquote>
+city      | temp_lo | temp_hi | prcp |    date    
+</blockquote>
+<p>
+---------------+---------+---------+------+------------
+ San Francisco |      46 |      50 | 0.25 | 1994-11-27
+ San Francisco |      43 |      57 |    0 | 1994-11-29
+ Hayward       |      37 |      54 |      | 1994-11-29
+(3 rows)
+</p>
+
+<pre>
+SELECT city, (temp_hi+temp_lo)/2 AS temp_avg, date FROM weather;
+</pre>
+<p>
+<em>results:</em>
+</p>
+<blockquote>
+city      | temp_avg |    date    
+</blockquote>
+<p>
+---------------+----------+------------
+ San Francisco |       48 | 1994-11-27
+ San Francisco |       50 | 1994-11-29
+ Hayward       |       45 | 1994-11-29
+(3 rows)
+</p>
+
+<pre>
+SELECT *
+    FROM weather
+    WHERE city = 'San Francisco'
+        AND prcp &gt; 0.0;
+</pre>
+<p>
+<em>results:</em>
+</p>
+<blockquote>
+city      | temp_lo | temp_hi | prcp |    date    
+</blockquote>
+<p>
+---------------+---------+---------+------+------------
+ San Francisco |      46 |      50 | 0.25 | 1994-11-27
+(1 row)
+</p>
+
+<pre>
+SELECT DISTINCT city
+    FROM weather
+    ORDER BY city;
+</pre>
+<p>
+<em>results:</em>
+</p>
+<blockquote>
+city      
+</blockquote>
+<hr />
+<p>
+ Hayward
+ San Francisco
+(2 rows)
+</p>
+
+<pre>
+SELECT *
+    FROM weather, cities
+    WHERE city = name;
+</pre>
+<p>
+<em>results:</em>
+</p>
+<blockquote>
+city      | temp_lo | temp_hi | prcp |    date    |     name      | location  
+</blockquote>
+<p>
+---------------+---------+---------+------+------------+---------------+-----------
+ San Francisco |      46 |      50 | 0.25 | 1994-11-27 | San Francisco | (-194,53)
+ San Francisco |      43 |      57 |    0 | 1994-11-29 | San Francisco | (-194,53)
+(2 rows)
+</p>
+<pre>
+SELECT city, temp_lo, temp_hi, prcp, date, location
+    FROM weather, cities
+    WHERE city = name;
+</pre>
+<p>
+<em>results:</em>
+</p>
+<blockquote>
+city      | temp_lo | temp_hi | prcp |    date    | location  
+</blockquote>
+<p>
+---------------+---------+---------+------+------------+-----------
+ San Francisco |      46 |      50 | 0.25 | 1994-11-27 | (-194,53)
+ San Francisco |      43 |      57 |    0 | 1994-11-29 | (-194,53)
+(2 rows)
+</p>
+
+<pre>
+SELECT weather.city, weather.temp_lo, weather.temp_hi, weather.prcp, weather.date, cities.location
+    FROM weather, cities
+    WHERE cities.name = weather.city;
+</pre>
+<p>
+<em>results:</em>
+</p>
+<blockquote>
+city      | temp_lo | temp_hi | prcp |    date    | location  
+</blockquote>
+<p>
+---------------+---------+---------+------+------------+-----------
+ San Francisco |      46 |      50 | 0.25 | 1994-11-27 | (-194,53)
+ San Francisco |      43 |      57 |    0 | 1994-11-29 | (-194,53)
+(2 rows)
+</p>
+
+<pre>
+SELECT *
+    FROM weather JOIN cities ON (weather.city = cities.name);
+     city      | temp_lo | temp_hi | prcp |    date    |     name      | location  
+</pre>
+<p>
+---------------+---------+---------+------+------------+---------------+-----------
+ San Francisco |      46 |      50 | 0.25 | 1994-11-27 | San Francisco | (-194,53)
+ San Francisco |      43 |      57 |    0 | 1994-11-29 | San Francisco | (-194,53)
+(2 rows)
+</p>
+
+<pre>
+SELECT *
+    FROM weather LEFT OUTER JOIN cities ON (weather.city = cities.name);
+</pre>
+<blockquote>
+city      | temp_lo | temp_hi | prcp |    date    |     name      | location  
+</blockquote>
+<p>
+---------------+---------+---------+------+------------+---------------+-----------
+ San Francisco |      46 |      50 | 0.25 | 1994-11-27 | San Francisco | (-194,53)
+ San Francisco |      43 |      57 |    0 | 1994-11-29 | San Francisco | (-194,53)
+ Hayward       |      37 |      54 |      | 1994-11-29 |               | 
+(3 rows)
+</p>
+
+<pre>
+SELECT W1.city, W1.temp_lo, W1.temp_hi,
+       W2.city, W2.temp_lo, W2.temp_hi
+FROM weather W1, weather W2
+WHERE W1.temp_lo &lt; W2.temp_lo
+   and W1.temp_hi &gt; W2.temp_hi;
+</pre>
+<p>
+<em>results:</em>
+</p>
+<blockquote>
+city      | temp_lo | temp_hi |     city      | temp_lo | temp_hi 
+</blockquote>
+<p>
+---------------+---------+---------+---------------+---------+---------
+ San Francisco |      43 |      57 | San Francisco |      46 |      50
+ Hayward       |      37 |      54 | San Francisco |      46 |      50
+(2 rows)
+</p>
+
+<pre>
+SELECT max(temp_lo)
+    FROM weather;
+</pre>
+<hr />
+<p>
+  46
+(1 row)
+</p>
+
+<pre>
+SELECT city FROM weather
+    WHERE temp_lo = (SELECT max(temp_lo) FROM weather);
+</pre>
+<blockquote>
+city      
+</blockquote>
+<hr />
+<p>
+ San Francisco
+(1 row)
+</p>
+
+<pre>
+SELECT city, max(temp_lo)
+    FROM weather
+    GROUP BY city;
+</pre>
+<blockquote>
+city      | max 
+</blockquote>
+<p>
+---------------+-----
+ Hayward       |  37
+ San Francisco |  46
+(2 rows)
+</p>
+
+<pre>
+SELECT city, max(temp_lo)
+    FROM weather
+    GROUP BY city
+    HAVING max(temp_lo) &lt; 40;
+</pre>
+<p>
+  city   | max 
+---------+-----
+ Hayward |  37
+(1 row)
+</p>
+
+<div id="Database Management-postgresql-update table"><h3 id="update table" class="header"><a href="#Database Management-postgresql-update table">update table</a></h3></div>
+<pre>
+UPDATE weather
+    SET temp_hi = temp_hi - 2,  temp_lo = temp_lo - 2
+    WHERE date &gt; '1994-11-28';
+</pre>
+<p>
+UPDATE 2
+</p>
+
+<div id="Database Management-postgresql-delete from table"><h3 id="delete from table" class="header"><a href="#Database Management-postgresql-delete from table">delete from table</a></h3></div>
+<pre>
+SELECT * FROM weather;
+</pre>
+<blockquote>
+city      | temp_lo | temp_hi | prcp |    date    
+</blockquote>
+<p>
+---------------+---------+---------+------+------------
+ San Francisco |      46 |      50 | 0.25 | 1994-11-27
+ San Francisco |      41 |      55 |    0 | 1994-11-29
+ Hayward       |      35 |      52 |      | 1994-11-29
+(3 rows)
+</p>
+
+<pre>
+DELETE FROM weather WHERE city = 'Hayward';
+</pre>
+<p>
+DELETE 1
+</p>
+
+<pre>
+SELECT * FROM weather;
+</pre>
+<blockquote>
+city      | temp_lo | temp_hi | prcp |    date    
+</blockquote>
+<p>
+---------------+---------+---------+------+------------
+ San Francisco |      46 |      50 | 0.25 | 1994-11-27
+ San Francisco |      41 |      55 |    0 | 1994-11-29
+(2 rows)
+</p>
+
+<pre>
+DELETE FROM weather;
+</pre>
+<p>
+DELETE 2
+</p>
+
+<pre>
+SELECT * FROM weather;
+</pre>
+<p>
+ city | temp_lo | temp_hi | prcp | date 
+------+---------+---------+------+------
+(0 rows)
+</p>
+
+<pre>
+DROP TABLE weather, cities;
+</pre>
+<p>
+DROP TABLE
+</p>
+
+</body>
+</html>

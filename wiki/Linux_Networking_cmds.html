@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="css/style.css">
+<title>Linux_Networking_cmds</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="Linux Networking Commands"><h1 id="Linux Networking Commands" class="header"><a href="#Linux Networking Commands">Linux Networking Commands</a></h1></div>
+
+<div id="Linux Networking Commands-DOCS"><h2 id="DOCS" class="header"><a href="#Linux Networking Commands-DOCS">DOCS</a></h2></div>
+<ul>
+<li>
+<a href="Wireshark.html">Wireshark</a> -- Spy on the line.
+
+<li>
+<a href="Nmap.html">Nmap</a> -- Great scanning tool.
+
+<li>
+<a href="Tcpdump.html">Tcpdump</a> -- The humble wire watcher.
+
+<li>
+<a href="git.html">git</a> - everybodies friendly repo
+
+</ul>
+
+<div id="Linux Networking Commands-Investigate sockets"><h2 id="Investigate sockets" class="header"><a href="#Linux Networking Commands-Investigate sockets">Investigate sockets</a></h2></div>
+<ul>
+<li>
+<span id="Linux Networking Commands-Investigate sockets-linux"></span><span class="tag" id="linux">linux</span> <span id="Linux Networking Commands-Investigate sockets-networking"></span><span class="tag" id="networking">networking</span> <span id="Linux Networking Commands-Investigate sockets-ss"></span><span class="tag" id="ss">ss</span> <span id="Linux Networking Commands-Investigate sockets-iproute2"></span><span class="tag" id="iproute2">iproute2</span> <span id="Linux Networking Commands-Investigate sockets-netstat"></span><span class="tag" id="netstat">netstat</span>
+
+</ul>
+<p>
+<span id="Linux Networking Commands-Investigate sockets-ss"></span><strong id="ss">ss</strong> is a utility to investigate network ports and is part of the
+<span id="Linux Networking Commands-Investigate sockets-iproute2"></span><strong id="iproute2">iproute2</strong> package. It has a similar functionality to the deprecated
+netstat utility. See <span id="Linux Networking Commands-Investigate sockets-ss(8)"></span><strong id="ss(8)">ss(8)</strong>, Common usage includes:
+</p>
+
+<table>
+<tr>
+<th>
+cmds
+</th>
+<th>
+Discription
+</th>
+</tr>
+<tr>
+<td>
+<code>ss -at</code>
+</td>
+<td>
+Display all TCP Sockets w/ service names
+</td>
+</tr>
+<tr>
+<td>
+<code>ss -atn</code>
+</td>
+<td>
+Display all TCP Sockets w/ port numbers
+</td>
+</tr>
+<tr>
+<td>
+<code>ss -au</code>
+</td>
+<td>
+Display all UDP Sockets
+</td>
+</tr>
+</table>
+<hr />
+<div id="Linux Networking Commands-Scanning Targets"><h2 id="Scanning Targets" class="header"><a href="#Linux Networking Commands-Scanning Targets">Scanning Targets</a></h2></div>
+<ul>
+<li>
+<span id="Linux Networking Commands-Scanning Targets-scanning"></span><span class="tag" id="scanning">scanning</span> <span id="Linux Networking Commands-Scanning Targets-bugbounty"></span><span class="tag" id="bugbounty">bugbounty</span> <span id="Linux Networking Commands-Scanning Targets-hack"></span><span class="tag" id="hack">hack</span> <span id="Linux Networking Commands-Scanning Targets-nmap"></span><span class="tag" id="nmap">nmap</span>
+
+</ul>
+<p>
+<span id="Linux Networking Commands-Scanning Targets-Nmap has a shodan plugin:"></span><strong id="Nmap has a shodan plugin:">Nmap has a shodan plugin:</strong>
+nmap --script=shodan-api --script-args='shodan-api.apikey=XXXXXX' google.com
+</p>
+
+<table>
+<tr>
+<th>
+tac
+</th>
+<th>
+Discription
+</th>
+</tr>
+<tr>
+<td>
+-sn
+</td>
+<td>
+Disable Port Scan
+</td>
+</tr>
+<tr>
+<td>
+-Pn
+</td>
+<td>
+Skip host discovery, don't ping the host
+</td>
+</tr>
+<tr>
+<td>
+-n
+</td>
+<td>
+Skip DNS Resolution
+</td>
+</tr>
+</table>
+
+<p>
+<span id="Linux Networking Commands-Scanning Targets-namp"></span><strong id="namp">namp</strong> will realize it has nothing left to do and will run the shodan-api
+script. You could also set the api-key directly into the nse script too.
+</p>
+
+<p>
+<img src="/home/kreator/.Wiki/tech/images/ss-nmap-2020-09-17.png" />
+<hr />
+</p>
+<div id="Linux Networking Commands-wget"><h2 id="wget" class="header"><a href="#Linux Networking Commands-wget">wget</a></h2></div>
+<ul>
+<li>
+<span id="Linux Networking Commands-wget-wget"></span><span class="tag" id="wget">wget</span> <span id="Linux Networking Commands-wget-download"></span><span class="tag" id="download">download</span> <span id="Linux Networking Commands-wget-website"></span><span class="tag" id="website">website</span>
+
+</ul>
+<p>
+<span id="Linux Networking Commands-wget-Download entire website:"></span><strong id="Download entire website:">Download entire website:</strong>
+<code>wget -m -p -E -k www.example.com</code>
+</p>
+
+<p>
+<span id="Linux Networking Commands-wget-Explained:"></span><strong id="Explained:">Explained:</strong>
+<table>
+<tr>
+<th>
+Option
+</th>
+<th>
+Discription
+</th>
+</tr>
+<tr>
+<td>
+<code>-m, --mirror</code>
+</td>
+<td>
+Infinite recursion &amp; time-stamp, keep FTP dir list.
+</td>
+</tr>
+<tr>
+<td>
+<code>-p, --page-requisites</code>
+</td>
+<td>
+Get all images, etc. needed to display HTML page.
+</td>
+</tr>
+<tr>
+<td>
+<code>-E, --adjust-extension</code>
+</td>
+<td>
+Save HTML/CSS files with .html/.css extensions.
+</td>
+</tr>
+<tr>
+<td>
+<code>-k, --convert-links</code>
+</td>
+<td>
+Make links in downloaded HTML point to local files.
+</td>
+</tr>
+</table>
+</p>
+
+<p>
+<span id="Linux Networking Commands-wget-Alternatively:"></span><strong id="Alternatively:">Alternatively:</strong>
+</p>
+<pre bash>
+wget \
+    --recursive \
+    --no-clobber \
+    --page-requisites \
+    --html-extension \
+    --convert-links \
+    --restrict-file-names=windows \
+    --domains website.org \
+    --no-parent \
+        www.website.org/tutorials/html/
+</pre>
+<hr />
+<div id="Linux Networking Commands-Access Point"><h2 id="Access Point" class="header"><a href="#Linux Networking Commands-Access Point">Access Point</a></h2></div>
+<ul>
+<li>
+<span id="Linux Networking Commands-Access Point-dhcp"></span><span class="tag" id="dhcp">dhcp</span> <span id="Linux Networking Commands-Access Point-access_point"></span><span class="tag" id="access_point">access_point</span> <span id="Linux Networking Commands-Access Point-wifi"></span><span class="tag" id="wifi">wifi</span> <span id="Linux Networking Commands-Access Point-ap"></span><span class="tag" id="ap">ap</span> <span id="Linux Networking Commands-Access Point-hostapd"></span><span class="tag" id="hostapd">hostapd</span>
+
+</ul>
+<p>
+<span id="Linux Networking Commands-Access Point-Note"></span><strong id="Note">Note</strong>: Debian 10, look at <span id="Linux Networking Commands-Access Point-/etc/default/isc-dhcp-server"></span><strong id="/etc/default/isc-dhcp-server">/etc/default/isc-dhcp-server</strong>, make sure you
+have added all the <em>interfaces</em> you want dhcp server to be on, also
+Hostapd need to make sure you <em>unmask</em> first:
+</p>
+<pre bash>
+systemctl unmask
+systemctl enable
+systemctl start hostapd
+</pre>
+<hr />
+<p>
+<span id="Linux Networking Commands-Access Point-Note:"></span><strong id="Note:">Note:</strong> Ubuntu, look at <span id="Linux Networking Commands-Access Point-/etc/ufw/sysctl.conf"></span><strong id="/etc/ufw/sysctl.conf">/etc/ufw/sysctl.conf</strong> make sure you have
+uncommented <span id="Linux Networking Commands-Access Point-net/ipv4/ip_forward=1"></span><strong id="net/ipv4/ip_forward=1">net/ipv4/ip_forward=1</strong>.
+<hr />
+<span id="Linux Networking Commands-Access Point-Note:"></span><strong id="Note:">Note:</strong> Here is an example of an <span id="Linux Networking Commands-Access Point-/etc/network/interfaces"></span><strong id="/etc/network/interfaces">/etc/network/interfaces</strong> in Debian:
+</p>
+<pre bash>
+# loopback network interface
+auto lo
+iface lo inet loopback
+
+# Management network interface
+auto eth0
+  iface eth0 inet dhcp
+  post-up echo 1 &gt; /proc/sys/net/ipv6/conf/$IFACE/disable_ipv6
+
+#wireless access point
+auto wlan0
+iface wlan0 inet static
+  address 10.4.0.14
+  netmask 255.255.255.240
+#  gateway 10.4.0.14
+  wireless-mode Master
+  post-up echo 1 &gt; /proc/sys/net/ipv6/conf/$IFACE/disable_ipv6
+
+#auto eth1
+#iface eth1 inet static
+#  address 10.0.0.1
+#  netmask 255.255.255.0
+#iface eth1 inet manual
+#  up ip link set $IFACE promisc on arp off up
+#  down ip link set $IFACE promisc off down
+#  post-up ethtool -G $IFACE rx ; for i in rx tx sg tso ufo gso gro lro; do ethtool -K $IFACE $i off; done
+  #post-up echo 1 &gt; /proc/sys/net/ipv6/conf/$IFACE/disable_ipv6
+</pre>
+<hr />
+<p>
+<span id="Linux Networking Commands-Access Point-Note:"></span><strong id="Note:">Note:</strong> To stop <span id="Linux Networking Commands-Access Point-Network Manager"></span><strong id="Network Manager">Network Manager</strong> from messing with the internal
+interfaces, we added the <em>keyfile</em> and the mac addresses of the NICs and
+WIFIs that it is not suppose to manage.
+</p>
+<pre bash>
+[main]
+plugins=ifupdown,keyfile,ofono
+dns=dnsmasq
+
+[ifupdown]
+managed=false
+
+[keyfile]
+unmanaged-devices=mac:00:50:ba:d7:fe:b6;mac:00:1c:26:1b:ea:fa
+</pre>
+<hr />
+<p>
+<span id="Linux Networking Commands-Access Point-Note:"></span><strong id="Note:">Note:</strong> If you want to use <span id="Linux Networking Commands-Access Point-dnsmasq"></span><strong id="dnsmasq">dnsmasq</strong> in Debian then look at
+<span id="Linux Networking Commands-Access Point-/etc/defaults/dnsmasq"></span><strong id="/etc/defaults/dnsmasq">/etc/defaults/dnsmasq</strong> file, make sure ENABLE is set:
+</p>
+<pre bash>
+# by setting DNSMASQ_OPTS to --conf-file=&lt;file&gt;
+DNSMASQ_OPTS="--conf-file=/etc/dnsmasq.alt"
+# Whether or not to run the dnsmasq daemon; set to 0 to disable.
+ENABLED=1
+</pre>
+<hr />
+<p>
+<span id="Linux Networking Commands-Access Point-Note:"></span><strong id="Note:">Note:</strong> Here's an example simple configuration for dnsmasq, the file
+could be <span id="Linux Networking Commands-Access Point-/etc/dnsmasq.alt"></span><strong id="/etc/dnsmasq.alt">/etc/dnsmasq.alt</strong>:
+</p>
+<pre bash>
+no-resolv
+bind-interfaces
+interface=wlan0
+dhcp-range=10.4.0.1,10.4.0.13,4h
+# opendns nameervers
+server=208.67.222.222
+server=208.67.220.220
+# nameservers from google
+#server=8.8.8.8
+#server=8.8.4.4
+log-dhcp
+</pre>
+<hr />
+<p>
+<span id="Linux Networking Commands-Access Point-Note:"></span><strong id="Note:">Note:</strong> Enable hostapd, in <span id="Linux Networking Commands-Access Point-/etc/defaults:"></span><strong id="/etc/defaults:">/etc/defaults:</strong>
+</p>
+<pre bash>
+DAEMON_CONF="/etc/hostapd/hostapd.conf"
+</pre>
+<hr />
+<p>
+<span id="Linux Networking Commands-Access Point-Note:"></span><strong id="Note:">Note:</strong> Here's a simple <span id="Linux Networking Commands-Access Point-hostapd.conf"></span><strong id="hostapd.conf">hostapd.conf</strong> configuration:
+</p>
+<pre bash>
+interface=wlan0
+driver=nl80211
+ssid=**************************
+logger_syslog=-1
+logger_syslog_level=1
+hw_mode=g
+#wmm_enabled=1
+#nl80211=1
+channel=8
+macaddr_acl=0
+#auth_algs=1
+ignore_broadcast_ssid=0
+wpa=3
+wpa_passphrase=*****************
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+</pre>
+<hr />
+<div id="Linux Networking Commands-dnsmasq with dnscrypt-proxy"><h2 id="dnsmasq with dnscrypt-proxy" class="header"><a href="#Linux Networking Commands-dnsmasq with dnscrypt-proxy">dnsmasq with dnscrypt-proxy</a></h2></div>
+
+<p>
+This I have <span id="Linux Networking Commands-dnsmasq with dnscrypt-proxy-not tested fully"></span><strong id="not tested fully">not tested fully</strong>, but it's something to try out in the
+future.  <em>Dnsmasq</em> combined with <em>dnscrypt-proxy</em> provide caching,
+encryption and server-side authentication.  Said to be useful to protect
+a laptop from potentially hostile networks.
+</p>
+<pre bash>
+apt-get install dnsmasq dnscrypt-proxy
+</pre>
+<hr />
+<p>
+Configure <span id="Linux Networking Commands-dnsmasq with dnscrypt-proxy-/etc/resolv.conf"></span><strong id="/etc/resolv.conf">/etc/resolv.conf</strong> to use dnsmasq:
+</p>
+<pre bash>
+nameserver 127.0.0.1
+</pre>
+<hr />
+<p>
+Configure <span id="Linux Networking Commands-dnsmasq with dnscrypt-proxy-/etc/dnsmasq.conf"></span><strong id="/etc/dnsmasq.conf">/etc/dnsmasq.conf</strong>
+</p>
+<pre bash>
+# ignore resolv.conf
+no-resolv
+# Listen only on localhost
+listen-address=127.0.0.1
+# dnscrypt is on port 40
+server=127.0.0.1#40
+</pre>
+<hr />
+<p>
+Configure
+<span id="Linux Networking Commands-dnsmasq with dnscrypt-proxy-/etc/systemd/system/sockets.target.wants/dnscrypt-proxy.socket"></span><strong id="/etc/systemd/system/sockets.target.wants/dnscrypt-proxy.socket">/etc/systemd/system/sockets.target.wants/dnscrypt-proxy.socket</strong>
+with the following 5 lines if you are using systemd
+</p>
+<pre bash>
+[Socket]
+ListenStream=
+ListenDatagram=
+ListenStream=127.0.0.1:40
+ListenDatagram=127.0.0.1:40
+</pre>
+<p>
+Then, <span id="Linux Networking Commands-dnsmasq with dnscrypt-proxy-restart"></span><strong id="restart">restart</strong> both daemons!
+<hr />
+</p>
+
+<div id="Linux Networking Commands-tcpdump"><h2 id="tcpdump" class="header"><a href="#Linux Networking Commands-tcpdump">tcpdump</a></h2></div>
+
+<p>
+Look at the examples:
+<code>man tcpdump | less -Ip examples</code>
+</p>
+
+<p>
+Tcpdump filter for HTTP GET:
+<code>sudo tcpdump -s 0 -A 'tcp[((tcp[12:1] &amp; 0xf0) &gt;&gt; 2):4] = 0x47455420'</code>
+</p>
+
+<p>
+Filter for HTTP POST:
+<code>sudo tcpdump -s 0 -A 'tcp dst port 80 and (tcp[((tcp[12:1] &amp; 0xf0) &gt;&gt; 2):4] = 0x504f5354)'</code>
+</p>
+
+<p>
+Monitor HTTP traffic including request and response headers and message
+body: <a href="https://sites.google.com/site/jimmyxu101/testing/use-tcpdump-to-monitor-http-traffic">https://sites.google.com/site/jimmyxu101/testing/use-tcpdump-to-monitor-http-traffic</a>
+</p>
+<pre bash>
+tcpdump -A -s 0 'tcp port 80 and (((ip[2:2] - ((ip[0]&amp;0xf)&lt;&lt;2)) - ((tcp[12]&amp;0xf0)&gt;&gt;2)) != 0)'
+tcpdump -X -s 0 'tcp port 80 and (((ip[2:2] - ((ip[0]&amp;0xf)&lt;&lt;2)) - ((tcp[12]&amp;0xf0)&gt;&gt;2)) != 0)'
+</pre>
+
+<p>
+For more information on the bit-twiddling in the TCP headers see:
+<a href="http://www.wireshark.org/tools/string-cf.html">http://www.wireshark.org/tools/string-cf.html</a>
+<hr />
+</p>
+<div id="Linux Networking Commands-IPTables"><h2 id="IPTables" class="header"><a href="#Linux Networking Commands-IPTables">IPTables</a></h2></div>
+
+<div id="Linux Networking Commands-Notes"><h2 id="Notes" class="header"><a href="#Linux Networking Commands-Notes">Notes</a></h2></div>
+<ul>
+<li>
+Always try to use iptables-save and iptables-restore
+
+<li>
+use <code>iptables-restore --test</code> to test if it comes back.
+
+<li>
+if dealing with WIFI make sure you use <code>rfkill list</code> to see if
+      interface is blocking at all.
+
+</ul>
+<hr />
+<div id="Linux Networking Commands-THE TABLES HOW TO USE"><h2 id="THE TABLES HOW TO USE" class="header"><a href="#Linux Networking Commands-THE TABLES HOW TO USE">THE TABLES HOW TO USE</a></h2></div>
+<p>
+-t filter --the default if none given--
+</p>
+<blockquote>
+INPUT (for packets destined to local sockets)
+FORWARD (for packets being routed through the box)
+OUTPUT (for locally-generated packets)
+</blockquote>
+<p>
+-t nat --as of 3.7--
+</p>
+<blockquote>
+PREROUTING (for altering packets as soon as they come in)
+OUTPUT (for altering locally-genrated packets before routering)
+POSTROUTING (for altering packets as they are about to go out)
+</blockquote>
+<p>
+-t mangle
+</p>
+<blockquote>
+--until 2.4.17--
+PREROUTING (for alitering incoming packets before routing)
+OUTPUT (for altering locally-generated packets before routing)
+--as of 2.4.18-- 
+INPUT (for packets coming into the box itself)
+FORWARD (for altering packets being routed through the box)
+POSTROUTING (for altering packets as they are about to go out)
+</blockquote>
+<p>
+-t raw
+</p>
+<blockquote>
+Note: used to configure exemptions from connection tracking,
+in combination with the NOTRACK target.  It registers at the
+netfilter hooks with higher priority and is thus called before
+ip_conntrack, or any other IP   tables.
+PREROUTING (for packets arriving via any network interface)
+OUTPUT (for packets generated by local processes)
+</blockquote>
+<p>
+-t security
+</p>
+<blockquote>
+Note: used for MAC (Mandatory Access Control from SELinux) networking
+rules, such as those enabled by the SECMARK and CONNSECMARK targets.
+The <span id="Linux Networking Commands-THE TABLES HOW TO USE-security"></span><strong id="security">security</strong> table is called after the <span id="Linux Networking Commands-THE TABLES HOW TO USE-filter"></span><strong id="filter">filter</strong> table, allowing any
+DAC (Discretionary Access Control) rules in filter table to take
+effect before MAC rules.
+INPUT (for packets comming into the box itself)
+OUTPUT (for altering locally-generated packets before routing)
+FORWARD (for altering packets being routed through the box.
+</blockquote>
+<hr />
+<div id="Linux Networking Commands-THE TABLES HOW TO USE-Options"><h3 id="Options" class="header"><a href="#Linux Networking Commands-THE TABLES HOW TO USE-Options">Options</a></h3></div>
+<p>
+There are 3 types of <span id="Linux Networking Commands-THE TABLES HOW TO USE-Options-options"></span><strong id="options">options</strong>.
+Commands, Parameters, Other Options.
+</p>
+
+<div id="Linux Networking Commands-THE TABLES HOW TO USE-Commands"><h3 id="Commands" class="header"><a href="#Linux Networking Commands-THE TABLES HOW TO USE-Commands">Commands</a></h3></div>
+<p>
+-A, --append
+</p>
+<blockquote>
+<em>chain</em> <em>rule-specification</em>
+</blockquote>
+
+<p>
+-C, --check
+</p>
+<blockquote>
+<em>chain</em> <em>rule-specification</em>
+</blockquote>
+
+<p>
+-D, --delete
+</p>
+<blockquote>
+<em>chain</em> <em>rule-specification</em>
+</blockquote>
+
+<p>
+-D, --delete
+</p>
+<blockquote>
+<em>chain</em> <em>rulenum</em>
+</blockquote>
+
+<p>
+-I, --insert <em>chain</em> [<em>rulenum</em>] <em>rule-specificaation</em>
+</p>
+<blockquote>
+Note: Insert rule(s) at <em>rulenum</em>, the default is 1 (at the head/top)
+</blockquote>
+
+<p>
+-R, --replace <em>chain</em> <em>rulenum</em> <em>rule-specification</em>
+</p>
+<blockquote>
+Note: Rules are numbered starting at 1
+</blockquote>
+
+<p>
+-L, --list [<em>chain</em>]
+</p>
+<blockquote>
+Note: list all rules or one <em>chain</em>. Like every other iptable command, it
+applies to the specified <em>table</em> (filter is the default), so NAT rules get
+listed by:
+<code>iptables -t nat -n -L</code>
+note: it is offen used with the -n option to avoid long DNS lookups.
+note: The exact rules are suppressed <em>until</em> you use:
+<code>iptables -L -v</code>
+</blockquote>
+
+<p>
+-S, --list-rules [<em>chain</em>]
+</p>
+<blockquote>
+note: like all other commands, applies to a table (filter is the default).
+</blockquote>
+
+<p>
+-F, --flush [<em>chain</em>]
+</p>
+<blockquote>
+Flush selected <em>chain</em> (all chains in the table if none is given).
+</blockquote>
+    
+<p>
+-Z, --zero [<em>chain</em> [<em>rulenum</em>]]
+</p>
+<blockquote>
+Zero out the packet and byte counters in all chains.
+Its legal to specify -L, --list as well, to see the counters immediately
+before they are cleared. (See above).
+</blockquote>
+    
+<p>
+-N, --new-chain <em>chain</em>
+</p>
+<blockquote>
+Create a new user-defined chain by the given name. (can not pre-exist)
+</blockquote>
+    
+<p>
+-X, --delete-chain <em>chain</em>
+</p>
+<blockquote>
+Delete a user created <em>chain</em>, must remove all the rules and references
+to this chain first. if <em>chain</em> name is not supplied, it will try to
+delete any chain it can.
+</blockquote>
+    
+<p>
+-P, --policy <em>chain</em> <em>target</em>
+</p>
+<blockquote>
+Set ppolicy for a built-in <em>chain</em> to the given <em>target</em>.
+</blockquote>
+    
+<p>
+-E, --rename-chain <em>old-chain</em> <em>new-chain</em>
+</p>
+
+<div id="Linux Networking Commands-THE TABLES HOW TO USE-Parameters"><h3 id="Parameters" class="header"><a href="#Linux Networking Commands-THE TABLES HOW TO USE-Parameters">Parameters</a></h3></div>
+<p>
+The parameters make up a rule specification.
+</p>
+
+<p>
+-4, --ipv4
+-6, --ipv6
+</p>
+<blockquote>
+Only used to mix rules in one ip(6)tables-retore command.
+</blockquote>
+    
+<p>
+[!] -p, --protocol <em>protocol</em>
+</p>
+<blockquote>
+The protocol of a rule or a packet to check.  Can be one of tcp, udp,
+udplite, icmp, icmpv6, esp, ah, sctp, mh or the special keyword "all",
+or a numeric value.  A protocol name from /etc/protocols is also allowed.
+0 is equivlent to all. <span id="Linux Networking Commands-THE TABLES HOW TO USE-Parameters-all"></span><strong id="all">all</strong> will match with all protocols and is taken
+as default when this option is omitted.
+</blockquote>
+    
+<p>
+[!] -s, --source <em>address</em>[/<em>mask</em>][,<em>...</em>]
+</p>
+<blockquote>
+Source address can either be a <em>network name</em>, a <em>host name</em>, a <em>network IP</em>
+address (with /<em>mask</em>), or a plain IP address. 
+note: Specifying any name to be resolved with a remote query such as
+DNS is a really bad idea!
+</blockquote>
+<p>
+[!] -d, --destination <em>address</em>[/<em>mask</em>][,<em>...</em>]
+</p>
+<blockquote>
+Destination address, see source address above.
+</blockquote>
+    
+<p>
+-m, --match <em>match</em>
+</p>
+<blockquote>
+Speifies a match of extension modul that tests for a property. Matches
+are in the order giving on the command line. If one extension yields
+false, evaluation will stop.
+</blockquote>
+    
+<p>
+-j, --jump <em>target</em>
+</p>
+<blockquote>
+This   Specifies the <em>target</em> rule (ie. what to do if the packet matches).
+Target can be user defined chain, a built-in (which decides the fate of
+the packet immediately), or an extension.
+note: if this option is omitted, then matching the rule will have
+no effect on the packet's fate, but the counters on the rule
+will be incremented. (unles there is a --goto)
+</blockquote>
+              
+<p>
+-g, --goto <em>chain</em>
+</p>
+<blockquote>
+This specifies that the processing should continue in a user specifed
+chain.  Unlike --jump option return will not continue processing in this
+chain   but instead in the chain that called us via --jump
+</blockquote>
+
+<p>
+[!] -i, --in-interface <em>name</em>
+</p>
+<blockquote>
+Name of an interface via which a packet was recieved (only for packets
+entering the INPUT, FORWARD and PREROUTING chains).
+note: if interface name ends in a "+", then any interface which
+begins with this name will match.
+note: If this option is omitted, any interface name will match.
+</blockquote>
+
+<p>
+[!] -o, --out-interface <em>name</em>
+</p>
+<blockquote>
+Name of an interface via which a packet is going to be sent (for packets
+entering the FORWARD, OUTPUT and POSTROUTING chains).  Same notes as above.
+</blockquote>
+
+<p>
+[!] -f, --fragment
+</p>
+<blockquote>
+Only for ipv4. Rule refers to the second and further IPv4 fragments of
+fragmented packets.
+</blockquote>
+
+<p>
+-c, --set-counters <em>packets</em> <em>bytes</em>
+</p>
+<blockquote>
+This enables the administrator to initialize the packet and byte counters
+of a rule (during INSERT, APPEND, REPLACE operations).
+</blockquote>
+
+<div id="Linux Networking Commands-THE TABLES HOW TO USE-Other Options"><h3 id="Other Options" class="header"><a href="#Linux Networking Commands-THE TABLES HOW TO USE-Other Options">Other Options</a></h3></div>
+<p>
+-v, --verbose 
+</p>
+<blockquote>
+^- <span id="Linux Networking Commands-THE TABLES HOW TO USE-Other Options-DO"></span><strong id="DO">DO</strong> use this!! all the time!!!
+</blockquote>
+
+<p>
+-w, --wait
+</p>
+<blockquote>
+wait for the xtables lock.
+</blockquote>
+
+<p>
+-n, --numeric
+</p>
+<blockquote>
+Don't display hostnames do numerical ip.
+</blockquote>
+
+<p>
+-x, --exact
+</p>
+<blockquote>
+display exact numbers instead of with K's M's and G's
+</blockquote>
+
+<p>
+--line-numbers
+</p>
+<blockquote>
+only used with -L, --list to display line numbers.
+</blockquote>
+
+<p>
+--modprobe=<em>command</em>
+</p>
+<blockquote>
+when adding or inserting rules use this <em>modprobe</em> cmd.
+</blockquote>
+<hr />
+<div id="Linux Networking Commands-THE TABLES HOW TO USE-Tips and Tricks"><h3 id="Tips and Tricks" class="header"><a href="#Linux Networking Commands-THE TABLES HOW TO USE-Tips and Tricks">Tips and Tricks</a></h3></div>
+
+<div id="Linux Networking Commands-THE TABLES HOW TO USE-Connecting to subnets together"><h3 id="Connecting to subnets together" class="header"><a href="#Linux Networking Commands-THE TABLES HOW TO USE-Connecting to subnets together">Connecting to subnets together</a></h3></div>
+<ul>
+<li>
+Make sure ip_forwarding is turned on in sysctl.conf
+
+<li>
+These lines are an example:
+
+</ul>
+<p>
+<code>iptables -A FORWARD -i eth0 -o eth2 -s 10.0.0.1/24 -d 10.20.0.1/24 -j ACCEPT</code>
+<code>iptables -A FORWARD -i eth2 -o eth0 -s 10.20.0.1/24 -d 10.0.0.1/24 -j ACCEPT</code>
+</p>
+
+<ul>
+<li>
+how to let out DHCP:
+
+</ul>
+<p>
+<code>iptables -A OUTPUT -o wlan0 -p udp -m udp --dport 68 -j ACCEPT</code>
+<hr />
+</p>
+<div id="Linux Networking Commands-Other Interesting Networking Docs"><h2 id="Other Interesting Networking Docs" class="header"><a href="#Linux Networking Commands-Other Interesting Networking Docs">Other Interesting Networking Docs</a></h2></div>
+
+<ul>
+<li>
+<a href="scapy.html">scapy</a> -- Mess with packets.
+
+<li>
+<a href="Apache2.html">Apache2</a> -- The daddy of all webservers.
+
+<li>
+<a href="Namecheap.html">Namecheap</a> -- Configuring dynamic IP for DNS.
+
+<li>
+<a href="Virtualization.html">Virtualization</a> -- Virtualization of machines.
+
+</ul>
+
+<div id="Linux Networking Commands-Below is Older Unformated Stuff"><h2 id="Below is Older Unformated Stuff" class="header"><a href="#Linux Networking Commands-Below is Older Unformated Stuff">Below is Older Unformated Stuff</a></h2></div>
+
+<ul>
+<li>
+Libvirt Networking Handbook:
+
+</ul>
+<p>
+<a href="https://jamielinux.com/docs/libvirt-networking-handbook/bridged-network.html">https://jamielinux.com/docs/libvirt-networking-handbook/bridged-network.html</a>
+</p>
+
+<ul>
+<li>
+Wake up on LAN:
+
+<ul>
+<li>
+<code>sudo nmcli connection modify "Wired connection 1" 802-3-ethernet.wake-on-lan magic</code>
+
+</ul>
+</ul>
+
+<div id="Linux Networking Commands-Access Point Tip"><h2 id="Access Point Tip" class="header"><a href="#Linux Networking Commands-Access Point Tip">Access Point Tip</a></h2></div>
+<ul>
+<li>
+MAKE SURE you installed rfkill.
+
+</ul>
+
+<div id="Linux Networking Commands-HOWTO: Port Forward in linux"><h2 id="HOWTO: Port Forward in linux" class="header"><a href="#Linux Networking Commands-HOWTO: Port Forward in linux">HOWTO: Port Forward in linux</a></h2></div>
+<p>
+echo 1 &gt; "/proc/sys/net/ipv4/ip_forward"
+</p>
+
+<ul>
+<li>
+Libvirt Networking Handbook:
+
+</ul>
+<p>
+<a href="https://jamielinux.com/docs/libvirt-networking-handbook/bridged-network.html">https://jamielinux.com/docs/libvirt-networking-handbook/bridged-network.html</a>
+</p>
+
+<ul>
+<li>
+Wake up on LAN:
+
+<ul>
+<li>
+<code>sudo nmcli connection modify "Wired connection 1" 802-3-ethernet.wake-on-lan magic</code>
+
+</ul>
+</ul>
+
+<div id="Linux Networking Commands-Access Point Tip"><h2 id="Access Point Tip" class="header"><a href="#Linux Networking Commands-Access Point Tip">Access Point Tip</a></h2></div>
+<ul>
+<li>
+MAKE SURE you installed rfkill.
+
+</ul>
+
+<div id="Linux Networking Commands-HOWTO: Port Forward in linux"><h2 id="HOWTO: Port Forward in linux" class="header"><a href="#Linux Networking Commands-HOWTO: Port Forward in linux">HOWTO: Port Forward in linux</a></h2></div>
+<p>
+echo 1 &gt; "/proc/sys/net/ipv4/ip_forward"
+</p>
+
+<div id="Linux Networking Commands-HOWTO: Quick Dirty MASQ"><h2 id="HOWTO: Quick Dirty MASQ" class="header"><a href="#Linux Networking Commands-HOWTO: Quick Dirty MASQ">HOWTO: Quick Dirty MASQ</a></h2></div>
+<p>
+## eth0 is INTERNET, wlan0 is LAN.
+sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE  
+sudo iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT  
+sudo iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT  
+</p>
+
+<div id="Linux Networking Commands-Access VM's thru OpenVPN"><h2 id="Access VM's thru OpenVPN" class="header"><a href="#Linux Networking Commands-Access VM's thru OpenVPN">Access VM's thru OpenVPN</a></h2></div>
+<p>
+NB: forward in from the tun0 out to virbr0
+</p>
+<ol>
+<li>
+iptables -I FORWARD 1 -i tun0 -o virbr0 -j ACCEPT
+
+</ol>
+
+<p>
+To connect to VM's with virt-viewer:
+</p>
+<ol>
+<li>
+Make sure you have virsh -c qemu:///system list --all showing them
+
+<li>
+You might have to <em>start</em> them.
+
+<li>
+make sure sshd is open and running.
+
+<li>
+$ <code>virt-viewer -f --connect qemu+ssh://kreator@10.8.0.1/system &lt;NAME&gt;</code>
+
+</ol>
+
+<div id="Linux Networking Commands-Fedora 26 way of Firewall"><h2 id="Fedora 26 way of Firewall" class="header"><a href="#Linux Networking Commands-Fedora 26 way of Firewall">Fedora 26 way of Firewall</a></h2></div>
+<ol>
+<li>
+firewall-cmd --add-forward-port=port=2222:proto=tcp:toport=22:toaddr=192.168.124.48
+
+</ol>
+<p>
+success
+</p>
+<ul>
+<li>
+This forwards the port 2222/tcp to 192.168.124.48:22 (for SSHing
+      to a VM)
+
+</ul>
+
+<div id="Linux Networking Commands-OpenVSwitch"><h2 id="OpenVSwitch" class="header"><a href="#Linux Networking Commands-OpenVSwitch">OpenVSwitch</a></h2></div>
+<ul>
+<li>
+create bridge with <code>ovs-vsctl add-br br0</code>
+
+<li>
+Add a port to the bridge for the NIC that you want your
+      guests to communicate over (e.g. eth0):
+      <code>ovs-vsctl add-port br0 eth0</code>
+
+</ul>
+
+
+<div id="Linux Networking Commands-HOWTO: Wireshark"><h2 id="HOWTO: Wireshark" class="header"><a href="#Linux Networking Commands-HOWTO: Wireshark">HOWTO: Wireshark</a></h2></div>
+<p>
+ToDo:
+</p>
+<ul>
+<li>
+read the code for the simpler dissectors.
+
+<li>
+they are in the epan/dissectors directory.
+
+<li>
+under packets-[protocolname].c
+
+</ul>
+
+<p>
+Questions:
+</p>
+<ul>
+<li>
+How do I filter for just one port say 'port 3030'?
+
+</ul>
+
+<p>
+Some Notes:
+</p>
+<ul>
+<li>
+Realtime log, along with a pcap capture.
+
+<li>
+I should know exactly my MACs, all of my MACs.
+
+</ul>
+
+<p>
+Tips:
+</p>
+<ul>
+<li>
+Also use Follow The TCP Stream!
+
+<li>
+Use Statistics-Packet Lengths..
+    Chapter 8:
+
+<li>
+Use:
+
+<ul>
+<li>
+Statistics-&gt;Protocol Hierarchy
+        Look under UDP on DNS: The end pakets N, tells you how many
+        packets there are, query and responce, presume dividing that
+        by 2 to get just queries.
+
+<li>
+Then can apply this filter for the queries: 'dns.flags ==
+          0x0100' to view all the sites that your web app is trying.
+
+</ul>
+<li>
+Statistics-&gt;HTTP-&gt;Requests, click on Create Stat.
+
+<li>
+Statistics-&gt;Summery &lt;- shows how long the process takes.
+
+</ul>
+
+<p>
+Question:
+</p>
+<blockquote>
+<a href="https://code.wireshark.org/review/gitweb?p=wireshark.git;a=tree">https://code.wireshark.org/review/gitweb?p=wireshark.git;a=tree</a>
+</blockquote>
+<ul>
+<li>
+at this website, how to I browse the code for the version that I
+      have?
+
+</ul>
+
+<div id="Linux Networking Commands-form a book?"><h2 id="form a book?" class="header"><a href="#Linux Networking Commands-form a book?">form a book?</a></h2></div>
+
+<p>
+Protocol Issues:
+ -Connection initiation
+ -Negotiation of connection characteristcs
+ -Data formatting
+ -Error detection and correction
+ -connection termination
+</p>
+
+
+<div id="Linux Networking Commands-Router Stuff"><h2 id="Router Stuff" class="header"><a href="#Linux Networking Commands-Router Stuff">Router Stuff</a></h2></div>
+
+<p>
+mount -o bind /dev /mnt/openwrt/dev 
+mount -t proc none /mnt/openwrt/proc
+</p>
+
+<ul>
+<li>
+put /var on the HDD, for logs
+
+<ul>
+<li>
+logging more is better.
+
+</ul>
+</ul>
+
+<ul>
+<li>
+This is a logging box.
+
+</ul>
+
+<ul>
+<li>
+dnsmasq runs dhcp [and caching dns ?]
+
+</ul>
+
+<ul>
+<li>
+have to add ddns for freedns.afraid.org
+
+</ul>
+<p>
+--background --dyndns_system default@freedns.afraid.org -u guest -p guest -a wooowooo.mooo.com,M2xIc25pOWVqMlFJU044QjBSZWZnenIzOjE0NDEzNjcz --update_period_sec 600 --forced_update_period 864000 --log_file /tmp/ddns/ddns.log --cache_dir /tmp/ddns --exec ddns_success
+  ^ this is probably a cronjob.
+  ^ maybe its called inadyn, this is from inadyn.conf
+</p>
+
+<div id="Linux Networking Commands-More Router Stuff"><h2 id="More Router Stuff" class="header"><a href="#Linux Networking Commands-More Router Stuff">More Router Stuff</a></h2></div>
+
+<div id="Linux Networking Commands-More Router Stuff-Notes on systemd"><h3 id="Notes on systemd" class="header"><a href="#Linux Networking Commands-More Router Stuff-Notes on systemd">Notes on systemd</a></h3></div>
+<p>
+trying to install dnsmasq, got this:
+Job for dnsmasq.service failed because the control prcess exited with err code.
+"systemctl status dnsmsaq.service" and "journalctl -xe" for details
+</p>
+
+<p>
+invoke-rc.d: initscript dnsmasq, action "start" failed
+</p>
+
+
+<div id="Linux Networking Commands-More Router Stuff-A BASH script for the NATing"><h3 id="A BASH script for the NATing" class="header"><a href="#Linux Networking Commands-More Router Stuff-A BASH script for the NATing">A BASH script for the NATing</a></h3></div>
+<pre bash>
+#!/bin/bash
+#Initial wifi interface configuration
+ifconfig $1 up 10.0.0.1 netmask 255.255.255.0
+sleep 2
+###########Start DHCP, comment out / add relevant section##########
+#Thanks to Panji
+#Doesn't try to run dhcpd when already running
+if [ "$(ps -e | grep dhcpd)" == "" ]; then
+dhcpd $1 &amp;
+fi
+###########
+#Enable NAT
+iptables --flush
+iptables --table nat --flush
+iptables --delete-chain
+iptables --table nat --delete-chain
+iptables --table nat --append POSTROUTING --out-interface $2 -j MASQUERADE
+iptables --append FORWARD --in-interface $1 -j ACCEPT
+
+#Thanks to lorenzo
+#Uncomment the line below if facing problems while sharing PPPoE, see lorenzo's comment for more details
+#iptables -I FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+
+sysctl -w net.ipv4.ip_forward=1
+#start hostapd
+hostapd /etc/hostapd/hostapd.conf 1&gt;/dev/null
+killall dhcpd
+</pre>
+
+<div id="Linux Networking Commands-More Router Stuff-a simple /etc/dnsmasq.conf"><h3 id="a simple /etc/dnsmasq.conf" class="header"><a href="#Linux Networking Commands-More Router Stuff-a simple /etc/dnsmasq.conf">a simple /etc/dnsmasq.conf</a></h3></div>
+<pre bash>
+# disables dnsmasq reading any other files like /etc/resolv.conf for nameservers
+no-resolv
+# Interface to bind to
+interface=wlan0
+# Specify starting_range,end_range,lease_time
+dhcp-range=10.0.0.3,10.0.0.20,12h
+# dns addresses to send to the clients
+server=8.8.8.8
+server=8.8.4.4
+</pre>
+
+<div id="Linux Networking Commands-More Router Stuff-Another NATing Script"><h3 id="Another NATing Script" class="header"><a href="#Linux Networking Commands-More Router Stuff-Another NATing Script">Another NATing Script</a></h3></div>
+<pre bash>
+###########Start dnsmasq, modify if required##########
+if [ -z "$(ps -e | grep dnsmasq)" ]
+then
+ dnsmasq
+fi
+###########
+
+#Enable NAT
+iptables --flush
+iptables --table nat --flush
+iptables --delete-chain
+iptables --table nat --delete-chain
+iptables --table nat --append POSTROUTING --out-interface $2 -j MASQUERADE
+iptables --append FORWARD --in-interface $1 -j ACCEPT
+
+#Thanks to lorenzo
+#Uncomment the line below if facing problems while sharing PPPoE, see lorenzo's comment for more details
+#iptables -I FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+
+sysctl -w net.ipv4.ip_forward=1
+
+#start hostapd
+hostapd /etc/hostapd/hostapd.conf 1&gt; /dev/null
+killall dnsmasq
+</pre>
+
+<div id="Linux Networking Commands-More Router Stuff-Bring up the link"><h3 id="Bring up the link" class="header"><a href="#Linux Networking Commands-More Router Stuff-Bring up the link">Bring up the link</a></h3></div>
+<p>
+Make sure the link is up.
+</p>
+
+<p>
+<code># ip link set dev wlan0_ap up</code>
+</p>
+
+<p>
+Had to add this to /etc/NetworkManager/NetworkManager.conf
+</p>
+
+<p>
+[keyfile]
+unmanaged-devices=mac:&lt;hwaddr&gt;
+</p>
+
+<div id="Linux Networking Commands-What The Hell The Solution Is"><h2 id="What The Hell The Solution Is" class="header"><a href="#Linux Networking Commands-What The Hell The Solution Is">What The Hell The Solution Is</a></h2></div>
+
+<p>
+a&gt; dnsmasq was not setup.. 
+b&gt; AND MORE!!! the IP address was wrong after I got dnsmasq to do dhcp
+c&gt; I had to log in with another computer (maybe I should have 2 wifi's)
+</p>
+<ul>
+<li>
+Moral: NEVER TEST 1 laptop and/or WIFI card, if its not working!!!
+
+</ul>
+
+<p>
+Note: its kind of funny how disconnected things are.
+</p>
+<ul>
+<li>
+if you kill -9 hostapd, still the links <span id="Linux Networking Commands-What The Hell The Solution Is-wlan"></span><strong id="wlan">wlan</strong> stays up! after Auths.
+
+</ul>
+
+<p>
+Note: on MarioCoin
+</p>
+<ul>
+<li>
+edited /etc/sysctl.ctl to enable forward, and turned on a bunch of the
+      security features.  If something is weird in the networking check this
+      file again for clues about it.
+
+</ul>
+
+
+<div id="Linux Networking Commands-certbot ACMEv2 and Lets Encrypt"><h2 id="certbot ACMEv2 and Lets Encrypt" class="header"><a href="#Linux Networking Commands-certbot ACMEv2 and Lets Encrypt">certbot ACMEv2 and Lets Encrypt</a></h2></div>
+
+<p>
+It was super easy to setup a new service's Let's Encrypt TLS cert with
+Apache2 and the command certbot.
+it was install certbot via apt then run it, this is what I ran:
+</p>
+<pre>
+sudo apt install apache2 certbot
+sudo certbot --apache -d pong.securityrabbit.com
+</pre>
+<p>
+And it did everything!
+then setup a <a href="../systemd.html">systemd</a> timer.
+</p>
+
+<p>
+The command that renews the cert, I set up to run every Wed.
+<code>/usr/bin/certbot renew</code>
+and this renews all the certs for this account.
+</p>
+
+<div id="Linux Networking Commands-wash"><h2 id="wash" class="header"><a href="#Linux Networking Commands-wash">wash</a></h2></div>
+<p>
+Find WPS wifi APs in the area
+$ sudo airmon-ng start wlan0
+$ wash -i mon0
+</p>
+
+<div id="Linux Networking Commands-airodump-ng mon0"><h2 id="airodump-ng mon0" class="header"><a href="#Linux Networking Commands-airodump-ng mon0">airodump-ng mon0</a></h2></div>
+<p>
+One of the goals is to get the bssid of the AP.
+$ airodump-ng mon0 &lt;channel&gt;
+</p>
+<ul>
+<li>
+Used for capture and showing what wifi is in the area
+
+<li>
+To show what wifi is in the area:
+
+</ul>
+
+<p>
+To monitor one AP:
+$ airodump-ng -c 2 --bssid 00:17:7C:22:CB:80 -w dump mon0
+</p>
+<ul>
+<li>
+this is to focus on one AP.
+
+<li>
+also the -w writes out to a file.
+
+</ul>
+
+
+<div id="Linux Networking Commands-aireplay-ng"><h2 id="aireplay-ng" class="header"><a href="#Linux Networking Commands-aireplay-ng">aireplay-ng</a></h2></div>
+<p>
+Test to see if packet inject will work.
+$ sudo aireplay-ng --test -e HelloKitty08 -a C0:56:27:0B:EB:89 wlan4mon
+</p>
+<ul>
+<li>
+a score of 100% is great.
+
+<li>
+-a == access point MAC
+
+</ul>
+
+
+<p>
+To inject [untested]:
+$ aireplay-ng -1 0 -e HelloKitty08 -a C0:56:27:0B:EB:89 -h &lt;SOURCE&gt; mon0
+</p>
+<ul>
+<li>
+This creates a fake-auth
+
+<li>
+SOURCE is a client use what thats connected to the AP, NOT yours!
+
+<li>
+Issues:
+
+<ul>
+<li>
+If this: "Denied (code 12), wrong ESSID or WPA ?"
+          means that you have the run ESSID, check spelling.
+
+<li>
+If not "channel 1" then <code>airmon-ng start wlan4 6</code> for channel 6.
+
+</ul>
+</ul>
+
+
+<div id="Linux Networking Commands-Reaver"><h2 id="Reaver" class="header"><a href="#Linux Networking Commands-Reaver">Reaver</a></h2></div>
+<p>
+Gets the password from the WPS of the AP.
+$ reaver -i mon0 -b XX:XX:XX:XX:XX:XX
+</p>
+<ul>
+<li>
+Use the -vv option to see everything thats going on (Recommended)
+
+<li>
+This may take some hours, hopefully less than 3.
+
+</ul>
+<p>
+Know Issues:
+</p>
+<ol>
+<li>
+As in the pic above, you saw the first line read "Switching 
+       wlan0 to channel 6". (Yours will be mon0 instead of wlan0). 
+       Sometimes, it keeps switching interfaces forever.
+
+<li>
+Sometimes it never gets a beacon frame, and gets stuck in the
+       waiting for beacon frame stage.
+
+<li>
+Sometimes it never associates with the target AP.
+
+<li>
+Sometimes the response is too slow, or never comes, and a (0x02)
+       or something error is displayed.
+
+</ol>
+<p>
+In most cases, such errors suggest:
+</p>
+<ol>
+<li>
+Something wrong with wireless card.
+
+<li>
+AP is very choosy, won't let you associate.
+
+<li>
+The AP does not use WPS.
+
+<li>
+You are very far from the AP.
+
+</ol>
+
+<div id="Linux Networking Commands-sqlmap"><h2 id="sqlmap" class="header"><a href="#Linux Networking Commands-sqlmap">sqlmap</a></h2></div>
+<p>
+$ sqlmap --tor --tor-type=SOCKS5 -u \
+</p>
+<blockquote>
+"<a href="http://www.hackable.org/view_section.php?id=10&quot;">http://www.hackable.org/view_section.php?id=10"</a> \
+--user-agent="Googlebot (compatible; Googlebot/2.1; +<a href="http://www.google.com/bot.html)&quot;">http://www.google.com/bot.html)"</a>
+</blockquote>
+<ol>
+<li>
+This uses Tor on port 9050 as http proxy then makes also changes the
+
+</ol>
+<p>
+useragent.
+</p>
+
+</body>
+</html>

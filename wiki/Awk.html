@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="css/style.css">
+<title>Awk</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="Awk"><h1 id="Awk" class="header"><a href="#Awk">Awk</a></h1></div>
+
+<div id="Awk-DOCS"><h2 id="DOCS" class="header"><a href="#Awk-DOCS">DOCS</a></h2></div>
+<ul>
+<li>
+<a href="git.html">git</a> - everybodies friendly repo
+
+</ul>
+
+<div id="Awk-awk for adding leading zeros"><h2 id="awk for adding leading zeros" class="header"><a href="#Awk-awk for adding leading zeros">awk for adding leading zeros</a></h2></div>
+
+<ol>
+<li>
+This will take 1.txt 2.txt 3.txt and mv it to 01.txt 02.txt 03.txt
+
+<li>
+bug, there is no text in the $(ls) that looks for [0-9].txt files.
+
+</ol>
+
+<p>
+for i in \((ls); do mv "\)i" "\((echo \)i | awk '/^([0-9]).txt/ \
+</p>
+<blockquote>
+{ printf("0%s\n", $0) }')"; done
+</blockquote>
+
+</body>
+</html>

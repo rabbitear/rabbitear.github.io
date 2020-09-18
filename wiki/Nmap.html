@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="css/style.css">
+<title>Nmap</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="Nmap"><h1 id="Nmap" class="header"><a href="#Nmap">Nmap</a></h1></div>
+
+<p>
+Nmap -sS will do a SYN and look for an ACK, but it will not connect.
+If you use -sT it will connect.
+</p>
+
+<p>
+Nmap -sP for a ping sweep.
+</p>
+
+<p>
+Use nmap to get a report:
+<code>nmap -O -sV -sC -vv -oA printer --stylesheet=nmap.xsl &lt;host(s)&gt;</code>
+</p>
+<ul>
+<li>
+-O    Operating System
+
+<li>
+-sV   version scan
+
+<li>
+-sC   run some of the NSC scripts
+
+<li>
+-vv   very verbose
+
+<li>
+-oA n output to report, replace n with name
+
+<li>
+--stylesheet=nmap.xsl  makes output more readable, nmap.xsl comes with
+
+</ul>
+
+<p>
+While scans are going on, you can use these KEY bindings:
+If you press these keys with SHIFT it does the oppisit.
+</p>
+<ul>
+<li>
+SPACE     give info on how far has to go.
+
+<li>
+v         increase verbosity
+
+<li>
+d         increase the debugging
+
+<li>
+p         turn on pocket tracing
+
+</ul>
+
+</body>
+</html>

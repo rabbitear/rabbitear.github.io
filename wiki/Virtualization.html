@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="css/style.css">
+<title>Virtualization</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="virt-manager"><h1 id="virt-manager" class="header"><a href="#virt-manager">virt-manager</a></h1></div>
+<blockquote>
+installed virt-manager, did not see a debian setup.
+enabled libvirtd, because virt-manager was complaining.
+<code>$ sudo systemctl enable libvird</code>
+rebooted, but only needed to start it.
+</blockquote>
+<blockquote>
+now, says that there is an authentication error.
+what fixed tht is me adding myself to 'libvirt' and 'kvm' groups.
+</blockquote>
+<div id="virt-manager-virt-manager networking"><h2 id="virt-manager networking" class="header"><a href="#virt-manager-virt-manager networking">virt-manager networking</a></h2></div>
+<p>
+When I import a OVA or other images into virt-manager, I've been doing
+it with Gnome-Boxes.  Usually I have to setup a virbrXX interface on the
+host machine, then I can put the network card to use that, I also have
+setup a dnsmasq to that virbrXX subnet and applied some NAT'ing.  I've
+also noticed that the rtl8139 driver works way better than any e1000
+thing.
+</p>
+
+<div id="qemu"><h1 id="qemu" class="header"><a href="#qemu">qemu</a></h1></div>
+<p>
+### NOTES: QEMU-kvm
+For host-only setup dnsmasq
+$ ip addr add 172.20.0.1/16 dev br0
+$ ip link set br0 up
+$ dnsmasq --interface=br0 --bind-interfaces --dhcp-range=172.20.0.2,172.20.255.254
+</p>
+
+<div id="qemu-QEMU/qcow2 cache writeback"><h2 id="QEMU/qcow2 cache writeback" class="header"><a href="#qemu-QEMU/qcow2 cache writeback">QEMU/qcow2 cache writeback</a></h2></div>
+<p>
+IO is slow!! so add the writeback options in the qcow2/vm config, which is in xml.
+Stop the VM, edit it, then start the VM:
+</p>
+<pre>
+virsh --connect qemu:///system
+stop guestdomain
+edit guestdomain   &lt;-- add cache='writeback' in the driver section
+start guestdomain
+</pre>
+<p>
+What to edit:
+Remove the **'s here, they are just to show what to edit.
+</p>
+<pre>
+&lt;disk type='file' device='disk'&gt;
+&lt;driver name='qemu' type='qcow2' **cache='writeback'**/&gt;
+&lt;source file='/var/vms/vm2/ubuntu-kvm/tmphAUcOB.qcow2'/&gt;
+&lt;target dev='hda' bus='ide'/&gt;
+&lt;/disk&gt;
+</pre>
+
+<div id="qemu-Qemu options:"><h2 id="Qemu options:" class="header"><a href="#qemu-Qemu options:">Qemu options:</a></h2></div>
+<p>
+-enable-kvm
+-vga std -nographics -vnc :0
+</p>
+<blockquote>
+(then use 'gvncviewer :0' on the logging in host)
+</blockquote>
+<div id="qemu-OR"><h2 id="OR" class="header"><a href="#qemu-OR" class="justcenter">OR</a></h2></div>
+<p>
+qemu-system-i386 -vga qxl -space port=5930,disable-ticketing,addr=::1
+</p>
+<div id="qemu-connect client with"><h2 id="connect client with" class="header"><a href="#qemu-connect client with" class="justcenter">connect client with</a></h2></div>
+<p>
+spacec -h 127.0.0.1 -p 5930
+</p>
+<blockquote>
+(default to grab mouse and keyboard is Shift-F12)
+</blockquote>
+
+<div id="qemu-QEMU"><h2 id="QEMU" class="header"><a href="#qemu-QEMU">QEMU</a></h2></div>
+<p>
+qemu-img create -f qcow2 play_xxe.qcow2 4G
+</p>
+
+<p>
+qemu-system-i386 -m 1024 -hda play_xxe.qcow2 -cdrom /mnt/SuperNAS/Files/ISOz/archlinux-2014.11.01-dual.iso -boot d
+</p>
+
+
+<div id="NOTES: SecurityLab"><h1 id="NOTES: SecurityLab" class="header"><a href="#NOTES: SecurityLab">NOTES: SecurityLab</a></h1></div>
+<ol>
+<li>
+Get the 7zip OWASP Broke Webb app vm.
+
+<li>
+Convert your images with these two steps.
+    $ qemu-img convert OWASP\ Broken\ Web\ Apps.vmdk -O qcow2 owasp.qemu
+    $ qemu-img convert owasp.qemu -O qcow2 owasp2.qemu
+
+<li>
+Start the kvm hosts
+    $ kvm -hda owasp2.qemu -net nic -net user -m 512
+
+</ol>
+
+<div id="NOTES: SecurityLab-VNC display"><h2 id="VNC display" class="header"><a href="#NOTES: SecurityLab-VNC display">VNC display</a></h2></div>
+<p>
+<code>$ kvm -vga std -nographic -vnc :10</code>
+<code>$ gvnviewer :10</code>
+</p>
+
+<div id="NOTES: SecurityLab-SPICE display"><h2 id="SPICE display" class="header"><a href="#NOTES: SecurityLab-SPICE display">SPICE display</a></h2></div>
+<p>
+Start VM on the Host.
+<code>$ qemu-system-i386 -vga qxl -spice port=5930,disable-ticketing,addr=127.0.0.1</code>
+Run the client
+<code>$ spicec -h 127.0.0.1 -p 5900</code>
+</p>
+
+<div id="NOTES: SecurityLab-Using telnet"><h2 id="Using telnet" class="header"><a href="#NOTES: SecurityLab-Using telnet">Using telnet</a></h2></div>
+<p>
+An interesting way to run commands to the VM when telnet is enabled.
+</p>
+<pre>
+kvm -serial telnet:localhost:7001,server,nowait,nodelay \
+    -monitor telnet:localhost:7101,server,nowait,nodelay -vnc :1
+</pre>
+
+<p>
+<code>haltcmd="echo 'system_powerdown' | nc localhost 7101"</code>
+</p>
+
+<div id="NOTES: SecurityLab-Host-Only Networking"><h2 id="Host-Only Networking" class="header"><a href="#NOTES: SecurityLab-Host-Only Networking">Host-Only Networking</a></h2></div>
+<p>
+One manual way to setup host-only networking.
+Its probably easier! to use virt-manager.
+</p>
+<pre>
+$ ip addr add 172.20.0.1/16 dev br0
+$ ip link set br0 up
+$ dnsmasq --interface=br0 --bind-interfaces --dhcp-range=172.20.0.2,172.20.255.254
+</pre>
+
+<div id="NOTES: SecurityLab-br0 bridge setup"><h2 id="br0 bridge setup" class="header"><a href="#NOTES: SecurityLab-br0 bridge setup">br0 bridge setup</a></h2></div>
+<p>
+I got this from reddit, I should have these notes in another file.  This
+is something I have to do all the time setting up a new machine, so
+maybe I'll take this.
+<span id="NOTES: SecurityLab-br0 bridge setup-VMsetup"></span><span class="tag" id="VMsetup">VMsetup</span>
+</p>
+<pre>
+brctl addbr br0
+brctl addif br0 enp31s0
+ip link set dev br0 up
+
+#dhcpcd br0
+ip addr add 192.168.2.234/24 dev br0
+ip route add default via 192.168.2.1
+echo nameserver 1.1.1.1 &gt;&gt; /etc/resolv.conf  
+
+sysctl -w net.ipv4.ip_forward=1
+iptables --table nat --append POSTROUTING --out-interface enp31s0 -j MASQUERADE
+iptables --insert FORWARD --in-interface br0 -j ACCEPT
+</pre>
+<p>
+Here is the SOLVED post on that thread:
+</p>
+<pre>
+Finally got it to work, following your advice and then this posting: https://forums.unraid.net/topic/76446-mojave-vm-ethernet-failures/
+
+so, I have a command-line entry of this:
+
+brctl addbr br0
+brctl addif br0 enp6s0
+ip link set dev br0 up
+ip addr add 192.168.29.234/24 dev br0
+ip route add default via 192.168.29.1
+sysctl -w net.ipv4.ip_forward=1
+iptables --table nat --append POSTROUTING --out-interface enp6s0 -j MASQUERADE
+iptables --insert FORWARD --in-interface br0 -j ACCEPT
+
+and in my virsh .xml file, my interface is:
+
+&lt;interface type='bridge'&gt; &lt;mac address='52:54:00:42:61:38'/&gt; &lt;source bridge='br0'/&gt; &lt;model type='vmxnet3'/&gt; &lt;address type='pci' domain='0x0000' bus='0x01' slot='0x00' function='0x0'/&gt; &lt;/interface&gt;
+
+I was getting a Green light for connectivity from MacOS, but it wasn't passing traffic. Changing to vmxnet3 seems to have done the trick.
+
+Thanks!!
+</pre>
+<p>
+Here is the Manjaro forum link that he is referencing:
+<a href="https://forums.unraid.net/topic/76446-mojave-vm-ethernet-failures/">https://forums.unraid.net/topic/76446-mojave-vm-ethernet-failures/</a>
+Here is the reddit post:
+<a href="https://www.reddit.com/r/VFIO/comments/cwwkry/virsh_network_bridge_help_please/">https://www.reddit.com/r/VFIO/comments/cwwkry/virsh_network_bridge_help_please/</a>
+Here is one around systemd, this is a good one:
+<a href="https://www.reddit.com/r/linux/comments/b71078/systemdnetworkd_is_simply_amazing/">https://www.reddit.com/r/linux/comments/b71078/systemdnetworkd_is_simply_amazing/</a>
+#EOF#
+</p>
+
+<div id="kvm and qemu"><h1 id="kvm and qemu" class="header"><a href="#kvm and qemu">kvm and qemu</a></h1></div>
+
+<p>
+Also see:
+<a href="Networking.html#Access VM's thru OpenVPN">Networking#Access VM's thru OpenVPN</a>
+</p>
+
+<div id="kvm and qemu-To connect to kali:"><h2 id="To connect to kali:" class="header"><a href="#kvm and qemu-To connect to kali:">To connect to kali:</a></h2></div>
+<p>
+<code>virt-viewer --connect qemu+ssh://192.168.2.8/system KaLi-BuRp-2020</code>
+</p>
+
+<div id="Qubes, about VPN-vm and sys-whonix, from irc"><h1 id="Qubes, about VPN-vm and sys-whonix, from irc" class="header"><a href="#Qubes, about VPN-vm and sys-whonix, from irc">Qubes, about VPN-vm and sys-whonix, from irc</a></h1></div>
+<p>
+13:30 &lt; donoban&gt; well, first I have this because using sys-whonix directly to 
+</p>
+<blockquote>
+sys-net or sys-firewall doesn't work properly with my desktop
+</blockquote>
+<p>
+13:30 -!- ob-sed [~obesd@unaffiliated/obesd] has left #qubes []
+13:31 &lt; donoban&gt; also, I probably trust more my VPN provider (riseup) than my ISP 
+</p>
+<blockquote>
+so maybe would be a good idea in general
+</blockquote>
+<p>
+13:31 &lt; donoban&gt; the setup is create a proxyVPN where install openvpn/bitmask or 
+</p>
+<blockquote>
+what you use, call it vpn-VM
+</blockquote>
+<p>
+13:32 &lt; donoban&gt; this vpn-VM is directly connected to sys-net, I have a custom 
+</p>
+<blockquote>
+rule on the firewall to avoid any package being forwarded out of 
+the vpn tunnel
+</blockquote>
+<p>
+13:32 &lt; donoban&gt; iptables -I FORWARD 1 -o eth0 -j DROP
+13:32 &lt; donoban&gt; iptables -I FORWARD 2 -i eth0 -j DROP
+13:33 &lt; donoban&gt; on /rw/config/qubes-firewall-user-script
+13:33 &lt; donoban&gt; then just switch the netVM of sys-whonix (which by default is 
+</p>
+<blockquote>
+sys-firewall or sys-net) to vpn-VM
+</blockquote>
+
+
+
+
+<div id="Qubes, about VPN-vm and sys-whonix, from irc-Create a VM from an iso"><h2 id="Create a VM from an iso" class="header"><a href="#Qubes, about VPN-vm and sys-whonix, from irc-Create a VM from an iso">Create a VM from an iso</a></h2></div>
+<p>
+$ sudo virt-install --connect qemu:///system -n vm10 -r 512 --vcpus=2 -f ~/vm10.qcow2 -s 12 -c /dev/cdrom --vnc --noautoconsole --os-type linux --accelerate --network=bridge:br0 --hvm
+</p>
+
+<div id="Qubes, about VPN-vm and sys-whonix, from irc-Resize a qcow2 image"><h2 id="Resize a qcow2 image" class="header"><a href="#Qubes, about VPN-vm and sys-whonix, from irc-Resize a qcow2 image">Resize a qcow2 image</a></h2></div>
+<blockquote>
+Note: the qemu-img util is probably best to use here!
+Somehow the <code>vol-resize</code> messed up on me, saying it could not
+resize an image with snapshots, but then virt-manager showed
+no snapshots.
+Solve: It only had <span id="Qubes, about VPN-vm and sys-whonix, from irc-Resize a qcow2 image-root"></span><strong id="root">root</strong> permissions
+</blockquote>
+<ul>
+<li>
+note: every time I run it, it changes the perms back to
+              root. 
+    Try:
+
+</ul>
+<li>
+<code>qemu-img convert -O raw image.qcow2 image.raw</code> (read manpage)
+
+<li>
+<code>qemu-img resize image.raw +20GB</code> 
+
+
+<div id="Qubes, about VPN-vm and sys-whonix, from irc-Resize a qcow2 image-the virsh way (less reliable in my opinion"><h3 id="the virsh way (less reliable in my opinion" class="header"><a href="#Qubes, about VPN-vm and sys-whonix, from irc-Resize a qcow2 image-the virsh way (less reliable in my opinion" class="justcenter">the virsh way (less reliable in my opinion</a></h3></div>
+<ul>
+<li>
+Have libvirt running and the VM off.
+
+<li>
+Inside <code>virsh</code> usually I do it as root:
+
+<ul>
+<li>
+Run <code>pool-list</code> to list out your pools, you'll get a &lt;POOL&gt; list.
+
+<li>
+Run <code>vol-list --pool &lt;POOL&gt;</code> to list out where the file(s) are.
+
+</ul>
+<li>
+Outside of virsh:
+
+<ul>
+<li>
+incase of messup, take a copy <code>cp image.qcow2 image.qcow2.BAK</code>
+
+</ul>
+<li>
+Inside of <code>virsh</code>:
+
+<ul>
+<li>
+Read <code>help vol-resize</code>
+
+<li>
+if you specify 20G without delta, it is the absolute size, and
+          <em>not</em> an increase in size, BE CAREFUL of this
+
+<li>
+This cmd: <code>vol-resize image.qcow2 20G --pool &lt;POOL&gt;</code> resizes.
+
+<ul>
+<li>
+the &lt;POOL&gt; is whatever virsh pool it resides in.
+
+<li>
+make sure you DO THE CALCULATIONS on the size before hand!
+
+<li>
+Big NOTE: the file system of the image will remain at its
+              original size!!  To pick up the new space, boot into a
+              resizing rescue disk. <span id="Qubes, about VPN-vm and sys-whonix, from irc-Resize a qcow2 image-the virsh way (less reliable in my opinion-See below"></span><strong id="See below">See below</strong>.
+
+</ul>
+</ul>
+</ul>
+
+<div id="Qubes, about VPN-vm and sys-whonix, from irc-Booting Rescue Disk in a VM"><h2 id="Booting Rescue Disk in a VM" class="header"><a href="#Qubes, about VPN-vm and sys-whonix, from irc-Booting Rescue Disk in a VM">Booting Rescue Disk in a VM</a></h2></div>
+<blockquote>
+Use <code>virt-manager</code> to add the rescue disk, adjust boot order, and
+boot it.  Just like adding a CDROM, need to add a storage device.
+Inside <code>virt-manager</code>:
+</blockquote>
+<ul>
+<li>
+Click in the <em>Add Hardware</em> button, at the buttom of the list
+      which is inside the <span id="Qubes, about VPN-vm and sys-whonix, from irc-Booting Rescue Disk in a VM-information"></span><strong id="information">information</strong> window, with the light blub.
+
+<li>
+A window "Add New Virtual Hardware" will appear.
+
+<li>
+We want to add another VirtIO &lt;-- get it Virtual IO hardware :)
+
+<li>
+Select the radio button "Select or create custom storage"
+
+<li>
+Click on [Manage], select the Pool, then the <span id="Qubes, about VPN-vm and sys-whonix, from irc-Booting Rescue Disk in a VM-rescue image"></span><strong id="rescue image">rescue image</strong> to add
+
+<li>
+Finally, back at the <span id="Qubes, about VPN-vm and sys-whonix, from irc-Booting Rescue Disk in a VM-light blub"></span><strong id="light blub">light blub</strong> list:
+
+<ul>
+<li>
+Select <em>Boot Options</em> and you'll see "Boot device order"
+
+<ul>
+<li>
+Boot it!
+
+<li>
+Do it!
+
+<li>
+Work it!
+
+</ul>
+<li>
+Remember to change back the <span id="Qubes, about VPN-vm and sys-whonix, from irc-Booting Rescue Disk in a VM-boot order"></span><strong id="boot order">boot order</strong> when done. :)
+    Big NOTE: While in the POOL browser, I had to select 'Browse Local
+    Files'
+
+</ul>
+</ul>
+<div id="Qubes, about VPN-vm and sys-whonix, from irc-Deleting a snapshot"><h2 id="Deleting a snapshot" class="header"><a href="#Qubes, about VPN-vm and sys-whonix, from irc-Deleting a snapshot">Deleting a snapshot</a></h2></div>
+<ul>
+<li>
+List out the image <code>qemu-image snapshot -l &lt;imgfile&gt;</code>
+
+<li>
+Delete any image ID <code>qemu-image snapshot -d &lt;ID#&gt; &lt;imgfile&gt;</code>
+    Then list them again to make sure.
+
+</ul>
+
+<div id="Custom NAT for libvirtd"><h1 id="Custom NAT for libvirtd" class="header"><a href="#Custom NAT for libvirtd">Custom NAT for libvirtd</a></h1></div>
+
+<p>
+Original instructions are here:
+<a href="https://jamielinux.com/docs/libvirt-networking-handbook/custom-nat-based-network.html">https://jamielinux.com/docs/libvirt-networking-handbook/custom-nat-based-network.html</a>
+</p>
+
+<p>
+Here is a copy of the libvirt default:
+</p>
+<pre>
+-A POSTROUTING -j POSTROUTING_ZONES_SOURCE
+-A POSTROUTING -j POSTROUTING_ZONES
+-A LIBVIRT_PRT -s 192.168.122.0/24 -d 224.0.0.0/24 -j RETURN
+-A LIBVIRT_PRT -s 192.168.122.0/24 -d 255.255.255.255/32 -j RETURN
+-A LIBVIRT_PRT -s 192.168.122.0/24 ! -d 192.168.122.0/24 -p tcp -j MASQUERADE --to-ports 1024-65535
+-A LIBVIRT_PRT -s 192.168.122.0/24 ! -d 192.168.122.0/24 -p udp -j MASQUERADE --to-ports 1024-65535
+-A LIBVIRT_PRT -s 192.168.122.0/24 ! -d 192.168.122.0/24 -j MASQUERADE
+-A POSTROUTING_ZONES -o wlp4s0 -g POST_FedoraWorkstation
+</pre>
+
+<div id="Custom NAT for libvirtd-Disable the default network in libvirt"><h2 id="Disable the default network in libvirt" class="header"><a href="#Custom NAT for libvirtd-Disable the default network in libvirt">Disable the default network in libvirt</a></h2></div>
+<pre>
+# virsh net-destroy default
+# virsh net-autostart --disable default
+</pre>
+
+<div id="Custom NAT for libvirtd-Create a dummy interface"><h2 id="Create a dummy interface" class="header"><a href="#Custom NAT for libvirtd-Create a dummy interface">Create a dummy interface</a></h2></div>
+<p>
+The bridge inherits the MAC of the first interface, so it keeps changing
+unless the same VM is always power on first.  Keep the MAC constant,
+create a dummy network interface with a chosen MAC address and attach it
+to the bridge before anything else.  This is pick a random one
+(52:54:00:xx:xx:xx for KVM, and 00:16:3e:xx:xx:xx for Xen)
+</p>
+<pre>
+# hexdump -vn3 -e '/3 "52:54:00"' -e '/1 ":%02x"' -e '"\n"' /dev/urandom
+</pre>
+<p>
+52:54:00:ed:d2:db
+</p>
+
+<div id="Custom NAT for libvirtd-To create the NAT virtual bridge on Fedora"><h2 id="To create the NAT virtual bridge on Fedora" class="header"><a href="#Custom NAT for libvirtd-To create the NAT virtual bridge on Fedora">To create the NAT virtual bridge on Fedora</a></h2></div>
+<p>
+<a href="https://jamielinux.com/docs/libvirt-networking-handbook/appendix/nat-virtual-bridge-on-fedora.html">https://jamielinux.com/docs/libvirt-networking-handbook/appendix/nat-virtual-bridge-on-fedora.html</a>
+</p>
+
+<div id="Custom NAT for libvirtd-Enable forwarding (this is probably already enabled"><h2 id="Enable forwarding (this is probably already enabled" class="header"><a href="#Custom NAT for libvirtd-Enable forwarding (this is probably already enabled">Enable forwarding (this is probably already enabled</a></h2></div>
+<p>
+This will be already enabled on a Fedora system.
+</p>
+<pre>
+# echo "net.ipv4.ip_forward=1" &gt;&gt; /etc/sysctl.conf
+# echo "net.ipv4.conf.all.forwarding=1" &gt;&gt; /etc/sysctl.conf
+# sysctl -p
+</pre>
+
+<p>
+To create a persistent dummy interface in Fedora goto:
+<a href="https://jamielinux.com/docs/libvirt-networking-handbook/appendix/dummy-interface-on-fedora.html">https://jamielinux.com/docs/libvirt-networking-handbook/appendix/dummy-interface-on-fedora.html</a>
+</p>
+<div id="Custom NAT for libvirtd-Implement NAT"><h2 id="Implement NAT" class="header"><a href="#Custom NAT for libvirtd-Implement NAT">Implement NAT</a></h2></div>
+<p>
+In fedora I used firewall-config GUI, its in the repo.  After the
+virbr10 is up, it should be added to the default zone, which is
+FedoraWorkstation, make sure at the box at the top middle, labeled
+"Configuration:" is set from Runtime to Permanent!
+</p>
+
+<div id="Custom NAT for libvirtd-What actually happened"><h2 id="What actually happened" class="header"><a href="#Custom NAT for libvirtd-What actually happened">What actually happened</a></h2></div>
+<p>
+This blog post helped:
+<a href="http://xkahn.zoned.net/blog/2013/11/26/networking-and-gnome-boxes/">http://xkahn.zoned.net/blog/2013/11/26/networking-and-gnome-boxes/</a>
+</p>
+
+<p>
+I had to goto /etc/qemu/bridge.conf and make sure that allow virbr10 was
+the right interface, it was set at virbr0 by default.
+</p>
+
+</body>
+</html>

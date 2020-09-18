@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="css/style.css">
+<title>Python_old</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="Python (Old)"><h1 id="Python (Old)" class="header"><a href="#Python (Old)">Python (Old)</a></h1></div>
+
+<div id="Python (Old)-DOCS"><h2 id="DOCS" class="header"><a href="#Python (Old)-DOCS">DOCS</a></h2></div>
+<ul>
+<li>
+<a href="scapy.html">scapy</a> -- networking tool in python.
+
+<li>
+<a href="SQLalchemy.html">SQLalchemy</a> - Short HOWTO on sqlalchemy things.
+
+<li>
+<a href="git.html">git</a> - everybodies friendly repo
+
+</ul>
+
+<div id="Python Snippets"><h1 id="Python Snippets" class="header"><a href="#Python Snippets">Python Snippets</a></h1></div>
+<div id="Python Snippets-get the path of the 'script'"><h2 id="get the path of the 'script'" class="header"><a href="#Python Snippets-get the path of the 'script'">get the path of the 'script'</a></h2></div>
+<p>
+import os
+print os.path.dirname(os.path.realpath(_<em>file</em>_))
+=======
+</p>
+<div id="Python Snippets-TODO: (LEARN)"><h2 id="TODO: (LEARN)" class="header"><a href="#Python Snippets-TODO: (LEARN)"><span class="todo">TODO</span>: (LEARN)</a></h2></div>
+<ul>
+<li>
+install PIL and try and extract GPS info from jpg.
+
+</ul>
+
+<div id="Python Snippets-Args in Python"><h2 id="Args in Python" class="header"><a href="#Python Snippets-Args in Python">Args in Python</a></h2></div>
+<div id="Python Snippets-Args in Python-Quick and Dirty Arg"><h3 id="Quick and Dirty Arg" class="header"><a href="#Python Snippets-Args in Python-Quick and Dirty Arg">Quick and Dirty Arg</a></h3></div>
+<p>
+Here's a quick way to do args in python.
+</p>
+<pre>
+import sys
+def main():
+    if len(sys.argv) &lt; 2:
+        print 'Usage: ' + sys.argv[0] + ' &lt;target-ip&gt;'
+        exit(-1)
+</pre>
+<p>
+sys.argv[1] will have the first arg.
+</p>
+
+<div id="Python Snippets-Args in Python-OptionParser, only before and for 2.7"><h3 id="OptionParser, only before and for 2.7" class="header"><a href="#Python Snippets-Args in Python-OptionParser, only before and for 2.7">OptionParser, only before and for 2.7</a></h3></div>
+<p>
+Option Parser is usually a better way to get args.
+Use OptionParser([usage message]) to create an instance of na option parser.
+Next, parser.add_option to specify the individual command line options.
+</p>
+<blockquote>
+Note: its a function/class from optparse.
+Note2: this is <span id="Python Snippets-Args in Python-OptionParser, only before and for 2.7-depercated"></span><strong id="depercated">depercated</strong> since 2.7
+</blockquote>
+
+<div id="Python Snippets-Args in Python-argparse (the new way)"><h3 id="argparse (the new way)" class="header"><a href="#Python Snippets-Args in Python-argparse (the new way)">argparse (the new way)</a></h3></div>
+<p>
+its a module, auto generates help and usage.
+Here is an example:
+</p>
+<pre>
+import argparse
+
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('integers', metavar='N', type=int, nargs='+',
+                   help='an integer for the accumulator')
+parser.add_argument('--sum', dest='accumulate', action='store_const',
+                   const=sum, default=max,
+                   help='sum the integers (default: find the max)')
+
+args = parser.parse_args()
+print args.accumulate(args.integers)
+</pre>
+<p>
+Docs at:
+<a href="https://docs.python.org/2/library/argparse.html#module-argparse">https://docs.python.org/2/library/argparse.html#module-argparse</a>
+</p>
+
+
+<div id="Python Snippets-Read and Access check"><h2 id="Read and Access check" class="header"><a href="#Python Snippets-Read and Access check">Read and Access check</a></h2></div>
+<p>
+Does this file exist??
+And does this program/user have read access to the file??
+</p>
+<pre>
+import sys
+import os
+if len(sys.argv) == 2:
+    filename = sys.argv[1]
+    if not os.path.isfile(filename):
+        print '[-] ' + filename + ' does not exist.'
+        exit(0)
+    if not os.access(filename, os.R_OK):
+        print '[-] ' + filename + ' access denied.'
+        exit(0)
+    print '[+] Reading Vulnerabilities From: ' + filename
+</pre>
+
+<div id="Python Snippets-PIP: Update all distro python modules"><h2 id="PIP: Update all distro python modules" class="header"><a href="#Python Snippets-PIP: Update all distro python modules">PIP: Update all distro python modules</a></h2></div>
+<p>
+This command could be CAN be dangerous to some modules. 
+<code>pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 sudo pip install -U</code>
+</p>
+
+
+
+    
+    
+<div id="Python Snippets-Python, code to download video."><h2 id="Python, code to download video." class="header"><a href="#Python Snippets-Python, code to download video.">Python, code to download video.</a></h2></div>
+<pre>
+import requests
+import re
+from bs4 import BeautifulSoup
+
+url_re = "\\b(?:https?|ftp)://[-_a-zA-Z0-9]+(?:\\.[-_a-zA-Z0-9]*)+[^) \\t&lt;&gt;\"]*"
+pat = re.compile(url_re)
+
+r = requests.get('http://patrickjmt.com')
+soup = BeautifulSoup(r, "html.parser")
+
+all_links = soup.select("ul &gt; li &gt; a")
+count = 0
+for link in all_links:
+    count = count + 1
+    listre = re.findall(pat, link)
+    thelink = listre.pop()
+    print("{}. {}".format(count, thelink)
+</pre>
+<div id="Python Snippets-Text Machine"><h2 id="Text Machine" class="header"><a href="#Python Snippets-Text Machine">Text Machine</a></h2></div>
+<p>
+See if this file is a jpeg.
+</p>
+<pre>
+if "\xff\xd8\xff" in filein[:3]:
+    print "filebin is a jpeg."
+</pre>
+
+<div id="Python Snippets-pip"><h2 id="pip" class="header"><a href="#Python Snippets-pip">pip</a></h2></div>
+<p>
+TopTip: ~/.cache/pip can get corrupted, its okay to delete it.
+</p>
+
+<p>
+ProTip: To upgrade all packages:
+$ pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U
+It might be a good idea to capture the 'freeze' to a file first.
+$ pip freeze --local &gt; pip-freeze.list
+</p>
+
+<div id="Python Snippets-virtualenv"><h2 id="virtualenv" class="header"><a href="#Python Snippets-virtualenv">virtualenv</a></h2></div>
+<p>
+$ pip install virtualenv
+$ mkdir &lt;projectdir&gt;
+$ cd &lt;projectdir&gt;
+$ virtualenv venv
+$ source venv/bin/activate
+$ deactivate
+</p>
+
+<div id="Python Snippets-flask-ask on lamda"><h2 id="flask-ask on lamda" class="header"><a href="#Python Snippets-flask-ask on lamda">flask-ask on lamda</a></h2></div>
+<p>
+$ pip install flask-ask zappa requests awscli
+</p>
+
+<p>
+Copy the code listings from the blog post to the file repo_stats.py,
+the code listing is at: <a href="https://gist.github.com/johnwheeler/">https://gist.github.com/johnwheeler/</a>  ??
+</p>
+
+<p>
+Open a new tab: aws.amazon.com
+</p>
+<ul>
+<li>
+to create an IAM user.
+
+<li>
+search IAM (manage services and encryption keys)
+
+<ul>
+<li>
+Select Users
+
+<li>
+Select Add User
+
+<li>
+name zappa-deploy
+
+<li>
+programmatic access
+
+<li>
+attach policies directly.
+
+<li>
+Filter: Admins
+
+<li>
+Select AdministatorAccess
+
+<li>
+Click CreateUser
+
+</ul>
+</ul>
+<p>
+$ aws configure
+Copy/Paste Key ID
+Copy/Paste Secret Access Key
+Default region name: us-east-1
+Default output format: none &lt;- just press return.
+$ zappa init
+</p>
+<ul>
+<li>
+Accept all the defaults
+
+<li>
+it creates file default json_settings.js
+
+</ul>
+<p>
+$ zappa deploy dev
+Make note of the URL, thats where the skill is hosted.
+</p>
+
+<p>
+Goto browser, developer.amazon.com 
+Click Alexa tab
+Add a new skill
+</p>
+
+<p>
+Copy/Paste intents scheme
+Copy/Paste sample utterances
+</p>
+
+<p>
+Choice HTTPS
+select north america.
+Copy/Paste the URL
+</p>
+
+<p>
+Choose we're using wild card status.
+</p>
+
+<div id="Python Snippets-Python Logging"><h2 id="Python Logging" class="header"><a href="#Python Snippets-Python Logging">Python Logging</a></h2></div>
+<ul>
+<li>
+convert unicode back to ascii first.
+
+<li>
+Create a named group (?P&lt;groupname&gt;['\"])
+
+</ul>
+
+<p>
+a=re.search(r"(?P&lt;areacode&gt;)\d\d\d)-\d\d\d-\d\d\d\d")
+a.group()
+</p>
+
+<div id="Python Snippets-Python Logging-Dictionaries"><h3 id="Dictionaries" class="header"><a href="#Python Snippets-Python Logging-Dictionaries">Dictionaries</a></h3></div>
+<ul>
+<li>
+Lists are automatically indexed with an integer
+
+<li>
+With dictionaries, you specify a "key" as the index
+
+<ul>
+<li>
+dict1={'first':'a','second':'b','third':'c'} so dict1['first']='a'
+
+</ul>
+<li>
+similar to hash tables or associative arrays in other languages
+
+<li>
+Unordered data structure where a given key produces its matching data
+
+<li>
+Key can be an integer, string, or most any other Python object
+
+<li>
+Data can be integers, string, or any other Python object, including
+  lists or other dictionaries
+
+<li>
+Dictionaries are VERY fast at storing and retriving data.
+
+</ul>
+
+<p>
+&gt;&gt;&gt; d = {}   ## empty
+&gt;&gt;&gt; d['a'] = 'alpha'
+&gt;&gt;&gt; d['b'] = 'bravo'
+&gt;&gt;&gt; d['c'] = 'charlie'
+&gt;&gt;&gt; d['a']
+'alpha'
+&gt;&gt;&gt; d['whatever']
+KeyError: 'whatever'
+</p>
+
+<ul>
+<li>
+Without throwing an exception (d is the dictionary):
+
+</ul>
+<p>
+&gt;&gt;&gt; d.get("a")
+'alpha'
+&gt;&gt;&gt; d.get("x")
+</p>
+<ul>
+<li>
+See mom, no error.. It returns a null
+
+</ul>
+
+<ul>
+<li>
+The 'collections' module:
+
+<ul>
+<li>
+OrderedDict - remembers the ordered inserted
+
+<li>
+defaultdict - enables you to specify a default value.
+
+<li>
+Counter - a dictionary that automatically counts the number of
+      times a key is set.. Returns zero..
+
+</ul>
+</ul>
+
+<p>
+from collections import Counter
+wrdcnt=Counter()
+wrdcnt.update( open("mobydict.txt").read().lower().split())
+wrdcnt.most_common(10)
+</p>
+<ul>
+<li>
+counts the most common words/items.
+
+</ul>
+
+<p>
+import antigravity &lt;-- try it
+</p>
+
+<p>
+<code>http://bitbucket.org/jsthyer/bind9_logstat</code>
+pythex.org &lt;-- try it, test out regex.
+</p>
+
+</body>
+</html>

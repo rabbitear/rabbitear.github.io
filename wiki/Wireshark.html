@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="css/style.css">
+<title>Wireshark</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="wireshark"><h1 id="wireshark" class="header"><a href="#wireshark">wireshark</a></h1></div>
+
+<p>
+Goto:
+"Statistics" -&gt; 'Conversations" -&gt; "List"
+</p>
+
+<p>
+Export PDU's (high level data)
+</p>
+
+
+<div id="wireshark-Giving user sudo access"><h2 id="Giving user sudo access" class="header"><a href="#wireshark-Giving user sudo access">Giving user sudo access</a></h2></div>
+<p>
+<code>&lt;user_name&gt; ALL = NOPASSWD: /usr/sbin/wireshark</code>
+</p>
+
+<div id="wireshark-Setting network privileges for dumpcap"><h2 id="Setting network privileges for dumpcap" class="header"><a href="#wireshark-Setting network privileges for dumpcap">Setting network privileges for dumpcap</a></h2></div>
+<p>
+<code>sudo setcap cap_net_raw,cap_net_admin+eip /usr/sbin/dumpcap</code>
+</p>
+
+<div id="wireshark-tshark"><h2 id="tshark" class="header"><a href="#wireshark-tshark">tshark</a></h2></div>
+<p>
+Tip: Extract WPA handshake from large Pcap file.
+</p>
+<pre>
+tshark -r &lt;inputfile&gt; -R "eapol || wlan_mgt.tag.interpretation eq \
+&lt;ESSID&gt; || (wlan.fc.type_subtype==0x08 &amp;&amp; wlan_mgt.ssid eq &lt;ESSID&gt;)" \
+    -w &lt;outputfile&gt;
+</pre>
+
+<p>
+Tip: Extract SSL Certs from large PCAP file.
+</p>
+<pre>
+tshark -nr ssl.pcapng -2 -R "ssl.handshake.certificate" -V &gt; out.txt
+</pre>
+
+</body>
+</html>

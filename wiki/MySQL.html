@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="css/style.css">
+<title>MySQL</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="mysql basic commands"><h1 id="mysql basic commands" class="header"><a href="#mysql basic commands">mysql basic commands</a></h1></div>
+
+<div id="mysql basic commands-root login"><h2 id="root login" class="header"><a href="#mysql basic commands-root login">root login</a></h2></div>
+
+<p>
+mysql -uroot -powaspbwa
+</p>
+<ul>
+<li>
+if -p is left blank, system will prompt for password.
+
+</ul>
+
+<div id="mysql basic commands-reset root password"><h2 id="reset root password" class="header"><a href="#mysql basic commands-reset root password">reset root password</a></h2></div>
+
+<ol>
+<li>
+how to reset the password for root
+
+<li>
+here the '#' is the root prompt
+
+<li>
+since am lazy and just cut &amp; pasted.
+
+</ol>
+<p>
+########################################
+</p>
+
+<p>
+Stop mysqld daemon
+</p>
+
+<ol>
+<li>
+/etc/rc.d/mysqld stop
+
+<li>
+mysqld_safe --skip-grant-tables &amp;
+
+</ol>
+
+<p>
+Connect to mysql server
+</p>
+
+<ol>
+<li>
+mysql -u root mysql
+
+</ol>
+
+<p>
+Change root password:
+</p>
+
+<p>
+ mysql&gt; UPDATE user SET password=PASSWORD("NEW_PASSWORD") WHERE User='root';
+ mysql&gt; FLUSH PRIVILEGES;
+ mysql&gt; exit
+</p>
+
+<p>
+Then restart daemon:
+</p>
+
+<ol>
+<li>
+/etc/rc.d/mysqld restart
+
+</ol>
+
+<p>
+You're done
+</p>
+
+<ol>
+<li>
+I don't know what all that stuff was above
+
+</ol>
+<p>
+#############################
+##  Set the root password  ##
+#############################
+$ mysqladmin -u root password NEWPASSWORD
+</p>
+
+<p>
+or update
+</p>
+
+<p>
+$ mysqladmin -u root -p'oldpassword' password newpass
+</p>
+
+<p>
+change password for another user
+</p>
+
+<p>
+$ mysqladmin -u vivek -p oldpassword password newpass
+</p>
+
+<div id="mysql basic commands-create database backup"><h2 id="create database backup" class="header"><a href="#mysql basic commands-create database backup">create database backup</a></h2></div>
+
+<p>
+$ mysql -u root -p
+mysql&gt; grant all on menagerie.* to 'user'@'localhost';
+$ mysql -u user -p
+mysql&gt; create database menagerie;
+mysql&gt; use menagerie;
+mysql&gt; select DATABASE();			# this is only a check.
+</p>
+<ol>
+<li>
+now identify types of information.
+
+</ol>
+<p>
+mysql&gt; CREATE TABLE pet (name VARCHAR(20), owner VARCHAR(20),
+</p>
+<blockquote>
+-&gt; species VARCHAR(20), sex CHAR(1), birth DATE, death DATE);
+</blockquote>
+<p>
+mysql&gt; describe pet;				# verify the table is what you think.
+</p>
+<ol>
+<li>
+make a tabled seperated data table text file, pet.txt.
+
+</ol>
+<p>
+mysql&gt; LOAD DATA LOCAL INFILE './pet.txt' INTO TABLE pet;
+</p>
+<ol>
+<li>
+below, I inserted a new record.
+
+</ol>
+<p>
+mysql&gt; INSERT INTO pet 
+</p>
+<blockquote>
+-&gt; VALUES ('Puffball','Diane','hamster','f','1999-03-30',NULL);
+</blockquote>
+<p>
+mysql&gt; SELECT * FROM pet;					# verify what went in.
+#
+</p>
+<ol>
+<li>
+From here the table is finished.
+
+</ol>
+<p>
+#
+</p>
+<ol>
+<li>
+Here are some others things did in the Tutorial.
+
+</ol>
+<p>
+#
+mysql&gt; CREATE TABLE event (name VARCHAR(20), date DATE,
+</p>
+<blockquote>
+-&gt; type VARCHAR(15), remark VARCHAR(255));
+</blockquote>
+<ol>
+<li>
+then created petEvent.txt
+
+</ol>
+<p>
+mysql&gt; load DATA LOCAL INFILE 'petEvent.txt' INTO TABLE event;
+mysql&gt; SELECT * FROM event					# Verify the data.
+</p>
+<ol>
+<li>
+This next query looks for -something-
+
+</ol>
+<p>
+mysql&gt; SELECT pet.name,
+</p>
+<blockquote>
+-&gt; (YEAR(date)-YEAR(birth)) - (RIGHT(date,5)&lt;RIGHT(birth,5)) AS age,
+-&gt; remark
+-&gt; FROM pet INNER JOIN event
+-&gt;   ON pet.name = event.name
+-&gt; WHERE event.type = 'litter';
+</blockquote>
+<ol>
+<li>
+Another query to find mates to for breeding.
+
+</ol>
+<p>
+mysql&gt; SELECT p1.name, p1.sex, p2.name, p2.sex, p1.species
+</p>
+<blockquote>
+-&gt; FROM pet AS p1 INNER JOIN pet AS p2
+-&gt;   ON p1.species = p2.species AND p1.sex = 'f' AND p2.sex = 'm';
+</blockquote>
+<ol>
+<li>
+This shows the current selected database.
+
+</ol>
+<p>
+mysql&gt; SELECT DATABASE();
+</p>
+<ol>
+<li>
+This one below shoes the current tables in the database;
+
+</ol>
+<p>
+mysql&gt; SHOW TABLES;
+</p>
+<ol>
+<li>
+below shoes a description of any table in your current database.
+
+</ol>
+<p>
+mysql&gt; DESCRIBE pet;
+</p>
+<ol>
+<li>
+Next, shows the actual syntax of what it took to create the table pet.
+
+</ol>
+<p>
+mysql&gt; SHOW CREATE TABLE pet;
+</p>
+<ol>
+<li>
+Can show any index's in the table event here.
+
+</ol>
+<p>
+mysql&gt; SHOW INDEX FROM event;
+</p>
+
+
+<p>
+---pet.txt---
+Fluffy	Harold	cat	f	1993-02-04	\N 
+Claws	Gwen	cat	m	1994-03-17	\N 
+Buffy	Harold	dog	f	1989-05-13	\N 
+Fang	Benny	dog	m	1990-08-27	\N 
+Bowser	Diane	dog	m	1979-08-31	1995-07-29
+Chirpy	Gwen	bird	f	1998-09-11 \N	 
+Whistler	Gwen	bird	 	1997-12-09 \N	 
+Slim	Benny	snake	m	1996-04-29	 \N
+</p>
+
+
+
+<p>
+---end of pet.txt---
+</p>
+
+<p>
+---start of petEvent.txt---
+Buffy	1994-06-19	litter	3 puppies, 3 female
+Chirpy	1999-03-21	vet	needed beak straightened
+Slim	1997-08-03	vet	broken rib
+Bowser	1991-10-12	kennel	 
+Fang	1991-10-12	kennel	 
+Fang	1998-08-28	birthday	Gave him a new chew toy
+Claws	1998-03-17	birthday	Gave him a new flea collar
+Whistler	1998-12-09	birthday	First birthday
+</p>
+
+<p>
+---end of petEvent.txt---
+</p>
+<ol>
+<li>
+The \N is for NULL into the field.
+
+</ol>
+
+
+<div id="mysql basic commands-Load CSV file into database"><h2 id="Load CSV file into database" class="header"><a href="#mysql basic commands-Load CSV file into database">Load CSV file into database</a></h2></div>
+<p>
+How to load a common seperated value into mysql database
+========================================================
+</p>
+
+<p>
+run mysql client
+<hr />
+$ mysql -h localhost -u root -p&lt;password&gt;
+</p>
+
+<p>
+goto into database
+<hr />
+mysql&gt; use mydatabase;
+</p>
+
+<p>
+print out the target table
+<hr />
+mysql&gt; SELECT * FROM users;
+</p>
+
+<p>
+load the data from the csv file
+<hr />
+mysql&gt; LOAD DATA INFILE '/tmp/users.txt' replace INTO TABLE users FIELDS TERMINALED BY ',' LINES TERMINATED BY '\n';
+</p>
+
+
+<div id="mysql basic commands-database backup"><h2 id="database backup" class="header"><a href="#mysql basic commands-database backup">database backup</a></h2></div>
+<p>
+Mysql Backup
+============
+</p>
+
+<p>
+Backing up a database
+<hr />
+$ mysqldump -u root -pPASSWORD mydatabase1 mydatabase2 
+</p>
+<ul>
+<li>
+this will print out to STDOUT
+
+<li>
+multiples okay just keep adding the names
+
+<li>
+use redirect &gt; to write them to the file.
+
+</ul>
+
+<p>
+Restore a database
+<hr />
+$ mysql -u root -pPASSWORD mydatabase &lt; databackup.sql
+</p>
+
+
+<div id="mysql basic commands-grant permissions to user"><h2 id="grant permissions to user" class="header"><a href="#mysql basic commands-grant permissions to user">grant permissions to user</a></h2></div>
+<p>
+$ mysql -u root -p
+&gt; grant INSERT,SELECT on databasename.* to user@localhost;
+</p>
+
+</body>
+</html>

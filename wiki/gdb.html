@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="css/style.css">
+<title>gdb</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="GDB baby!"><h1 id="GDB baby!" class="header"><a href="#GDB baby!">GDB baby!</a></h1></div>
+
+<div id="GDB baby!-DOCS"><h2 id="DOCS" class="header"><a href="#GDB baby!-DOCS">DOCS</a></h2></div>
+<ul>
+<li>
+<a href="git.html">git</a> - everybodies friendly repo
+
+</ul>
+
+<div id="GDB baby!-Some keys"><h2 id="Some keys" class="header"><a href="#GDB baby!-Some keys">Some keys</a></h2></div>
+<p>
+CTRL-X A    puts you into TUI mode.
+CTRL-L      reprint screen
+CTRL-X 2    multiple windows, cycle thru.
+CTRL-X 1    go back.
+CTRL-P/N    Next and Prev command.
+</p>
+
+<div id="GDB baby!-Python interupter."><h2 id="Python interupter." class="header"><a href="#GDB baby!-Python interupter.">Python interupter.</a></h2></div>
+<p>
+gdb&gt; python print("hello world")
+gdb&gt; python[RETURN]
+</p>
+<blockquote>
+print("type python code here")
+</blockquote>
+<p>
+gdb&gt; info functions
+gdb&gt; b factorial(int)               # set breakpoint at function.
+gdb&gt; l N,M                          # list from/to line number.
+gdb&gt; info locals                    # local vars
+gdb&gt; watch &lt;var&gt;                    # watch how a var changes.
+gdb&gt; record full                    # start record.
+gdb&gt; c                              # continue
+gdb&gt; rs                             # alias for 'reverse step'
+gdb&gt; p &lt;var&gt;                        # print value of var.
+gdb&gt; set var &lt;var&gt;=&lt;val&gt;            # set a var to any value.
+</p>
+
+<div id="GDB baby!-gdb buffer overflow &amp; GDB analysis"><h2 id="gdb buffer overflow &amp; GDB analysis" class="header"><a href="#GDB baby!-gdb buffer overflow &amp; GDB analysis">gdb buffer overflow &amp; GDB analysis</a></h2></div>
+<p>
+Examine the procedure call stack.
+$ gcc -fno-stack-protector -m32 overflow.c
+</p>
+<ul>
+<li>
+compile without any stack protection and 32bit memory address
+      smaller.
+
+</ul>
+<p>
+gdb&gt; run &lt;args&gt;
+gdb&gt; info functions
+gdb&gt; disass main
+gdb&gt; x/20x $esp                     # dive into the stack.
+gdb&gt; c                              # continue to do stuff.
+</p>
+<ul>
+<li>
+the machine will do stuff here.
+
+</ul>
+<p>
+gdb&gt; x/20x $\(esp                    \) # Again to see what happens.
+</p>
+<ul>
+<li>
+look at the return pointer on the stack.
+
+<li>
+points to a function. &lt;--
+
+<li>
+fuzzing, make it crash, in a way we understand.
+
+</ul>
+<p>
+gdb&gt; run                            # run Again, breakpoint will still
+</p>
+<blockquote>
+be set.
+</blockquote>
+<p>
+python&gt;&gt;&gt; print "AAAAAAAAAAAAAAABBBB" &gt; attack.txt
+</p>
+<ul>
+<li>
+the B's are where the return point gets over written.
+
+</ul>
+<p>
+python&gt;&gt;&gt; print 'A*28' + '\xfa\x84\x04\x08'
+</p>
+<ul>
+<li>
+the memory address of a valid function.
+
+</ul>
+<p>
+=======
+</p>
+
+</body>
+</html>

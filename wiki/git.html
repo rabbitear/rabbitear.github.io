@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="css/style.css">
+<title>git</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="Arcticle has it all"><h1 id="Arcticle has it all" class="header"><a href="#Arcticle has it all">Arcticle has it all</a></h1></div>
+<p>
+<code>https://gun.io/blog/how-to-github-fork-branch-and-pull-request/</code>
+</p>
+
+<div id="Get Branching"><h1 id="Get Branching" class="header"><a href="#Get Branching">Get Branching</a></h1></div>
+<p>
+About: Git branching allows user to experiment with different version of a
+project by checking out separate branches to work on.
+</p>
+
+<p>
+<code>$ git branch</code> -- show which branche that you are on [list of all branches].
+</p>
+
+<p>
+<code>$ git branch &lt;new_branch&gt;</code> -- create a new branch called new_branch.
+</p>
+<blockquote>
+-- delete a branch by using 'branch -d &lt;name&gt;'
+</blockquote>
+
+<p>
+<code>$ git checkout branch_name</code> -- switch to a branch.
+</p>
+
+
+<div id="Git Basic commands"><h1 id="Git Basic commands" class="header"><a href="#Git Basic commands">Git Basic commands</a></h1></div>
+
+<p>
+<code>$ git add &lt;filename&gt;</code> -- adds this file to the staging area.
+</p>
+<blockquote>
+-- after any changes, need to stage the file again.
+</blockquote>
+
+<p>
+<code>$ git commit -m "Commit message"</code> -- creates the actual commit.
+</p>
+
+<p>
+<code>$ git log</code> -- show a list of all the commits.
+</p>
+
+<div id="Merging Branches"><h1 id="Merging Branches" class="header"><a href="#Merging Branches">Merging Branches</a></h1></div>
+
+<p>
+<code>$ git merge &lt;branch_name&gt;</code>
+</p>
+
+<div id="Notes From Wumpus"><h1 id="Notes From Wumpus" class="header"><a href="#Notes From Wumpus">Notes From Wumpus</a></h1></div>
+
+<ul>
+<li>
+GitHub
+      ------
+
+</ul>
+<div id="Notes From Wumpus-Setting up:"><h2 id="Setting up:" class="header"><a href="#Notes From Wumpus-Setting up:">Setting up:</a></h2></div>
+<pre bash>
+git config --global user.name "YOUR NAME"
+git config --global user.email "YOUR EMAIL ADDR"
+</pre>
+
+<div id="Notes From Wumpus-To push from cmdline after creating proj on github web."><h2 id="To push from cmdline after creating proj on github web." class="header"><a href="#Notes From Wumpus-To push from cmdline after creating proj on github web.">To push from cmdline after creating proj on github web.</a></h2></div>
+<pre bash>
+touch README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/rabbitear/javascript-class.git
+git push -u origin master
+</pre>
+
+<div id="Notes From Wumpus-Issues That Came Up"><h2 id="Issues That Came Up" class="header"><a href="#Notes From Wumpus-Issues That Came Up">Issues That Came Up</a></h2></div>
+
+<p>
+To get the new branch galaga-config to push, I had to do a couple of extra
+things.  Here's the jist of it.
+</p>
+
+<p>
+First I forgot the <code>git config --global user.name "name"</code> and the <code>git config --global user.email me@you.com</code>, so it asked me to <code>git commit --amend --reset-author</code>.  Then I ran these other two commands to put in the new branch:
+</p>
+<pre>
+git config --local push.default matching
+git push --set-upstream origin galaga-config
+</pre>
+
+<p>
+To be continued.
+</p>
+
+<div id="Notes From Wumpus-Issue, The missing file"><h2 id="Issue, The missing file" class="header"><a href="#Notes From Wumpus-Issue, The missing file">Issue, The missing file</a></h2></div>
+
+<p>
+This is a <span id="Notes From Wumpus-Issue, The missing file-WARNING"></span><strong id="WARNING">WARNING</strong>, if you git checkout to a new_brnach, then change the
+files around, they change back to the master branch, and do not merge back
+that file is gone.. Until you switch back to the new_branch.
+</p>
+<blockquote>
+[<span id="Notes From Wumpus-Issue, The missing file-SOLVED"></span><strong id="SOLVED">SOLVED</strong>] 
+</blockquote>
+<ol>
+<li>
+what I need to do is be in galaga-config branch:
+        <code>git checkout galaga-config</code>
+
+<li>
+copy the .vimrc back into the repo:
+        <code>cp ~/.vimrc ~/vimwiki/vimrc-galaga</code>
+
+<li>
+checkout the master branch:
+        <code>git checkout master</code>
+
+<li>
+then merge the the galaga-config branch back in:
+        <code>git merge galaga-config</code>
+
+<li>
+then check the status, and add and commit as necessary.
+        <code>git status</code>
+
+</ol>
+
+<div id="Notes From Wumpus-Remove BIGest files from git repositary"><h2 id="Remove BIGest files from git repositary" class="header"><a href="#Notes From Wumpus-Remove BIGest files from git repositary">Remove BIGest files from git repositary</a></h2></div>
+<ul>
+<li>
+Identify which files that are the biggest.
+      <code>git verify-pack -v .git/objects/pack/*.idx | sort -k 3 -n | tail -5</code>
+
+<li>
+Then from that, grab the revisions with the biggest files.  Then we
+      find the name of the files in those revisions:
+      <code>git rev-list --objects --all | grep &lt;revision_id&gt;</code>
+
+<li>
+Next, remove the file from all revisions:
+      <code>git filter-branch --index-filter 'git rm --cached --ignore-unmatch &lt;filename&gt;'</code>
+      <code>rm -rf .git/refs/original/</code>
+
+<li>
+Edit .git/packed-refs and remove/comment any external pack-refs. Without
+      this the cleanup might not work.  I my case I had 
+      refs/remotes/origin/master and some other branches.
+      <code>vim .git/packed-refs</code>
+
+<li>
+Finally repack and cleanup and remove those objects:
+      <code>git reflog expire --all --expire-unreachable=0</code>
+      <code>git repack -A -d</code>
+      <code>git prune</code>
+
+</ul>
+<div id="eof"><h1 id="eof" class="header"><a href="#eof">eof</a></h1></div>
+
+<div id="eof-Git Notes"><h2 id="Git Notes" class="header"><a href="#eof-Git Notes">Git Notes</a></h2></div>
+
+<p>
+I made the push.default set to current:
+</p>
+<ul>
+<li>
+this makes the push push the current repo.
+
+<li>
+used 'git config --local push.default current'
+
+</ul>
+
+</body>
+</html>
