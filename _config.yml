@@ -5,7 +5,11 @@ show_downloads: true
 permalink: /blog/:year/:month/:day/:title
 theme: jekyll-theme-hacker
 
-gems:
+plugins:
   - jekyll-mentions
   - jekyll-sitemap
+  - jekyll-feed
+
+jekyll-mentions:
+  base_url: https://twitter.com
 
