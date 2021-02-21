@@ -4,7 +4,7 @@ title: jekyll github pages restart
 date: '2021-02-07T13:27:00.001-07:00'
 author: rabbitear
 tags: Jekyll Github-Pages
-modified_time: '2013-10-15T02:06:49.568-07:00'
+modified_time: '2021-02-07T13:27:00.001-07:00'
 ---
 ## Game plan
 :todo-lists:
@@ -64,8 +64,11 @@ bestTool: SomeTool
 Posts are to be put in the __posts_ directory.
 These are variables in jekyll, some are preexisting, others, you can
 make new, to use in your post.  Every post must have a layout var.  You
-can use the bestTool variable with `{{ page.bestTool }}` instead the
-post.
+can use the bestTool variable with:
+```
+{{ page.bestTool }}
+```
+instead the post.
 
 SEE: https://talk.hyvor.com/blog/creating-a-static-site-blog-with-jekyll-and-github-pages/
 
