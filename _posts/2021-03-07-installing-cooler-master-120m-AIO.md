@@ -8,7 +8,7 @@ modified_time: '2021-03-07T20:02:00.001-07:00'
 ---
 # Cooler Master
 
-##My build out of older parts I had:
+## My build out of older parts I had:
 * Intel Xeno e3-1260l server cpu (fits in LGA 1155 socket)
 * 16 gigs ddr3 RAM, clocked at 1333mhz.
 * Foxconn H67S motherboard, from eBay, $50.00
@@ -22,28 +22,28 @@ to work when I get older, so invested in what might be quieter liquid
 cooling.  Below is a photo shoot of some of the rebuild with the new
 cooler.
 
-![Photo1](../assets/images/liquid-cooler/IMG_20210307_143135821.jpg)
-![Photo2](../assets/images/liquid-cooler/IMG_20210307_143153369_MP.jpg)
-![Photo3](../assets/images/liquid-cooler/IMG_20210307_143907948.jpg)
-![Photo4](../assets/images/liquid-cooler/IMG_20210307_143927274.jpg)
-![Photo5](../assets/images/liquid-cooler/IMG_20210307_143935602.jpg)
-![Photo6](../assets/images/liquid-cooler/IMG_20210307_143947959.jpg)
-![Photo7](../assets/images/liquid-cooler/IMG_20210307_144228375.jpg)
-![Photo8](../assets/images/liquid-cooler/IMG_20210307_144243955.jpg)
-![Photo9](../assets/images/liquid-cooler/IMG_20210307_150009673.jpg)
-![Photo10](../assets/images/liquid-cooler/IMG_20210307_150013932.jpg)
-![Photo11](../assets/images/liquid-cooler/IMG_20210307_150426831.jpg)
-![Photo12](../assets/images/liquid-cooler/IMG_20210307_150752898.jpg)
-![Photo13](../assets/images/liquid-cooler/IMG_20210307_151046398.jpg)
-![Photo14](../assets/images/liquid-cooler/IMG_20210307_151353236.jpg)
-![Photo15](../assets/images/liquid-cooler/IMG_20210307_151756057.jpg)
-![Photo16](../assets/images/liquid-cooler/IMG_20210307_154756574.jpg)
-![Photo17](../assets/images/liquid-cooler/IMG_20210307_164453311.jpg)
-![Photo18](../assets/images/liquid-cooler/IMG_20210307_164512410.jpg)
-![Photo19](../assets/images/liquid-cooler/IMG_20210307_164516873.jpg)
-![Photo20](../assets/images/liquid-cooler/IMG_20210307_165709499.jpg)
-![Photo21](../assets/images/liquid-cooler/IMG_20210307_165730766.jpg)
-![Photo22](../assets/images/liquid-cooler/IMG_20210307_180518924.jpg)
-![Photo23](../assets/images/liquid-cooler/IMG_20210307_180526958.jpg)
-![Photo24](../assets/images/liquid-cooler/IMG_20210307_180539001.jpg)
+![Photo1]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_143135821.jpg)
+![Photo2]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_143153369_MP.jpg)
+![Photo3]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_143907948.jpg)
+![Photo4]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_143927274.jpg)
+![Photo5]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_143935602.jpg)
+![Photo6]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_143947959.jpg)
+![Photo7]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_144228375.jpg)
+![Photo8]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_144243955.jpg)
+![Photo9]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_150009673.jpg)
+![Photo10]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_150013932.jpg)
+![Photo11]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_150426831.jpg)
+![Photo12]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_150752898.jpg)
+![Photo13]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_151046398.jpg)
+![Photo14]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_151353236.jpg)
+![Photo15]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_151756057.jpg)
+![Photo16]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_154756574.jpg)
+![Photo17]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_164453311.jpg)
+![Photo18]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_164512410.jpg)
+![Photo19]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_164516873.jpg)
+![Photo20]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_165709499.jpg)
+![Photo21]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_165730766.jpg)
+![Photo22]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_180518924.jpg)
+![Photo23]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_180526958.jpg)
+![Photo24]({{site.url}}../assets/images/liquid-cooler/IMG_20210307_180539001.jpg)
 
