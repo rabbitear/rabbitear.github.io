@@ -50,4 +50,4 @@ cooler.  Have a great day:
 ![Photo22]({{site.url}}/assets/images/liquid-cooler/IMG_20210307_180518924.jpg)
 ![Photo23]({{site.url}}/assets/images/liquid-cooler/IMG_20210307_180526958.jpg)
 ![Photo24]({{site.url}}/assets/images/liquid-cooler/IMG_20210307_180539001.jpg)
-
+## **EOF**
