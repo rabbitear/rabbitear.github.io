@@ -22,4 +22,5 @@ to work when I get older, so invested in what might be quieter liquid
 cooling.  Below is a photo shoot of some of the rebuild with the new
 cooler.
 
+![Photo1](../assets/images/liquid-cooler/IMG_20210305_155009374.jpg "Photo1")
 
