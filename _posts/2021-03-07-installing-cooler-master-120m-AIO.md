@@ -1,13 +1,11 @@
 ---
 layout: post
-title: installing cooler master 120m AIO
+title: Installing Cooler Master 120m AIO
 date: '2021-03-07T20:02:00.001-07:00'
 author: rabbitear
 tags: CPU-cooling hardware
 modified_time: '2021-03-07T20:02:00.001-07:00'
 ---
-# Cooler Master
-
 ## My build out of older parts I had:
 * Intel Xeno e3-1260l server cpu (fits in LGA 1155 socket)
 * 16 gigs ddr3 RAM, clocked at 1333mhz.
